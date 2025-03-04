@@ -1,31 +1,45 @@
 import './App.css'
+import { TodoList } from './components/TodoList';
+import { TTodoList, TTask } from './components/types/type.ts';
+import { GenerateId } from './common/generateId.tsx';
 
 function App() {
+
+  const tasks: TTask[] = [
+    {
+      id: GenerateId(),
+      title: 'CSS',
+      type: 'checkbox',
+      isChecked: true
+    },
+    {
+      id: GenerateId(),
+      title: 'JS',
+      type: 'checkbox',
+      isChecked: true
+    },
+    {
+      id: GenerateId(),
+      title: 'React',
+      type: 'checkbox',
+      isChecked: false
+    },
+    {
+      id: GenerateId(),
+      title: 'React Toolkit',
+      type: 'checkbox',
+      isChecked: false
+    },
+  ]
+
+  const todoListData: TTodoList = {
+    title: 'What to learn?',
+    tasks: tasks
+  }
+
   return (
       <div className="app">
-        <div>
-          <h3>What to learn</h3>
-          <div>
-            <input/>
-            <button>+</button>
-          </div>
-          <ul>
-            <li>
-              <input type="checkbox" checked={true}/> <span>HTML&CSS</span>
-            </li>
-            <li>
-              <input type="checkbox" checked={true}/> <span>JS</span>
-            </li>
-            <li>
-              <input type="checkbox" checked={false}/> <span>React</span>
-            </li>
-          </ul>
-          <div>
-            <button>All</button>
-            <button>Active</button>
-            <button>Completed</button>
-          </div>
-        </div>
+        <TodoList title={todoListData.title} tasks={todoListData.tasks}/>
       </div>
   )
 }
