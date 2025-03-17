@@ -1,11 +1,16 @@
-import { TTask } from "./types/type"
+import { TTask } from "./types/type";
 
-export const ListItem = (props: TTask) => {
-    const { id, type, title, isChecked } = props;
+type TListItem = {
+    task: TTask,
+    removeTask: Function
+}
+
+export const ListItem = (props: TListItem) => {
+    const { task, removeTask } = props;
     return (
         <li>
-            <input key={id} type={type} checked={isChecked}/> <span>{title}</span>
-            <button>x</button>
+            <input key={task.id} type={task.type} checked={task.isDone}/> <span>{task.title}</span>
+            <button onClick={() => removeTask(task.id)}>x</button>
         </li>
     )
 }
