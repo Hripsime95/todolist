@@ -1,7 +1,7 @@
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { v1 } from "uuid";
-import { TodoList } from "./common/components/TodoList";
 import { AddItem } from "./common/components/AddItem";
+import { TodoList } from "./common/components/TodoList";
 
 export type TFilter = "all" | "active" | "completed";
 // export type TPriority = 1 | 2 | 3;
@@ -84,6 +84,14 @@ function App() {
     setTasks({ ...tasks });
   }
 
+  function renameTask(name: string, taskId: string, id: string) {
+    const updatedTasks = tasks[id].map((t) => {
+      if (t.id === taskId) t.name = name;
+      return t;
+    });
+    setTasks({ ...tasks, [id]: updatedTasks });
+  }
+
   function changeTaskState(taskId: string, id: string) {
     const updatedTasks = tasks[id].map((t) => {
       if (t.id === taskId) t.isDone = !t.isDone;
@@ -118,6 +126,7 @@ function App() {
         deleteTask={deleteTask}
         createTask={createTask}
         changeTaskStateHandler={changeTaskState}
+        renameTask={renameTask}
         deleteTLHandler={deleteTodoList}
       />
     );

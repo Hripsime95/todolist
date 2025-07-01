@@ -2,6 +2,7 @@ import type { TFilter, TTask } from "../../App";
 import { AddItem } from "./AddItem";
 import { Button } from "./Button";
 import { Trash2 } from "lucide-react";
+import { EditableSpan } from "./EditableSpan";
 
 type TTLProps = {
   id: string;
@@ -15,6 +16,7 @@ type TTLProps = {
   createTask: (name: string, id: string) => void;
   changeTaskStateHandler: (taskId: string, id: string) => void;
   deleteTLHandler: (id: string) => void;
+  renameTask: (name: string, taskId: string, id: string) => void;
 };
 
 export const TodoList = (props: TTLProps) => {
@@ -29,6 +31,7 @@ export const TodoList = (props: TTLProps) => {
     createTask,
     deleteTLHandler,
     changeTaskStateHandler,
+    renameTask
   } = props;
 
   return (
@@ -54,7 +57,8 @@ export const TodoList = (props: TTLProps) => {
                   checked={task.isDone}
                   onChange={() => changeTaskStateHandler(task.id, id)}
                 />
-                <span>{task.name}</span>
+                {/* <span>{task.name}</span> */}
+                <EditableSpan value={task.name} onChange={(title) => renameTask(title,task.id, id)}></EditableSpan>
                 <Button name="x" clickHandler={() => deleteTask(task.id, id)} />
               </li>
             );

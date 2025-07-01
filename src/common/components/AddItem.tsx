@@ -38,7 +38,7 @@ export const AddItem = (props: {
             onChange={inputChangeHandler}
             type="text"
             value={inputValue}
-            autoFocus
+            onKeyDown={(e) => e.key === 'Enter' && submitHandler()}
           />
           <Button name="Cancel" clickHandler={() => cencleHandler()} />
           <Button
