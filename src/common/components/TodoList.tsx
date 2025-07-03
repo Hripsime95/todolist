@@ -1,8 +1,11 @@
 import type { TFilter, TTask } from "../../App";
 import { AddItem } from "./AddItem";
-import { Button } from "./Button";
-import { Trash2 } from "lucide-react";
+// import { Button } from "./Button";
 import { EditableSpan } from "./EditableSpan";
+import { Button, Checkbox, IconButton, List, ListItem } from "@mui/material";
+import { DeleteOutline, Clear } from "@mui/icons-material";
+import Box from '@mui/material/Box';
+import { containerSx, getListItemSx } from "../styles/TodolistItem.styles";
 
 type TTLProps = {
   id: string;
@@ -37,9 +40,12 @@ export const TodoList = (props: TTLProps) => {
   return (
     <div>
       <span>{title}</span>
-      <span onClick={() => deleteTLHandler(id)}>
+      {/* <span onClick={() => deleteTLHandler(id)}>
         <Trash2 size={20} />
-      </span>
+      </span> */}
+      <IconButton aria-label="delete" onClick={()=>deleteTLHandler(id)}>
+        <DeleteOutline/>
+      </IconButton>
 
       <AddItem
         title="Add Task"
@@ -48,36 +54,46 @@ export const TodoList = (props: TTLProps) => {
       {tasks.length === 0 ? (
         <p> Тасок нет </p>
       ) : (
-        <ul>
+        <List>
           {tasks.map((task) => {
             return (
-              <li key={task.id}>
-                <input
-                  type="checkbox"
+              <ListItem key={task.id} sx={getListItemSx(task.isDone)}>
+                <Checkbox
                   checked={task.isDone}
                   onChange={() => changeTaskStateHandler(task.id, id)}
                 />
                 {/* <span>{task.name}</span> */}
                 <EditableSpan value={task.name} onChange={(title) => renameTask(title,task.id, id)}></EditableSpan>
-                <Button name="x" clickHandler={() => deleteTask(task.id, id)} />
-              </li>
+                <IconButton 
+                  size="small"
+                  onClick={() => deleteTask(task.id, id)}
+                > <Clear/>
+
+                </IconButton>
+              </ListItem>
             );
           })}
-        </ul>
+        </List>
       )}
-      <div>
+      <Box sx={containerSx}>
         <Button
-          name="All"
-          clickHandler={() => {
+          variant={activeFilter === 'all' ? 'outlined' : 'text'}
+          size="small"
+          onClick={() => {
             return changeFilter("all", id);
           }}
-        />
-        <Button name="Active" clickHandler={() => changeFilter("active", id)} />
+        >All</Button>
+        <Button 
+          variant={activeFilter === 'active' ? 'outlined' : 'text'}
+          size="small"
+          onClick={() => changeFilter("active", id)}
+        >Active</Button>
         <Button
-          name="Completed"
-          clickHandler={() => changeFilter("completed", id)}
-        />
-      </div>
+          variant={activeFilter === 'completed' ? 'outlined' : 'text'}
+          size="small"
+          onClick={() => changeFilter("completed", id)}
+        >Completed</Button>
+      </Box>
     </div>
   );
 };

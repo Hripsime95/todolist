@@ -2,6 +2,18 @@ import { useState } from "react";
 import { v1 } from "uuid";
 import { AddItem } from "./common/components/AddItem";
 import { TodoList } from "./common/components/TodoList";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import { containerSx } from "./common/styles/TodolistItem.styles";
+import { NavButton } from "./common/components/NavButton";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from '@mui/material/CssBaseline'
+import Switch from "@mui/material/Switch";
 
 export type TFilter = "all" | "active" | "completed";
 // export type TPriority = 1 | 2 | 3;
@@ -23,6 +35,8 @@ export type TTask = {
 export type TTasks = {
   [key: string]: TTask[];
 };
+
+type ThemeMode = 'dark' | 'light'
 
 function App() {
   const todolistId1 = v1();
@@ -56,6 +70,12 @@ function App() {
       { id: v1(), name: "GraphQL", isDone: false },
     ],
   });
+
+  const [themeMode, setThemeMode] = useState<ThemeMode>('light')
+
+  const changeMode = () =>{
+    setThemeMode(themeMode === 'dark' ? 'light' : 'dark')
+  }
 
   function deleteTodoList(id: string) {
     setTodolists(todolists.filter((tl) => tl.id !== id));
@@ -107,6 +127,15 @@ function App() {
     setTodolists(updatedTL);
   }
 
+  const theme = createTheme({
+    palette: {
+      mode: themeMode,
+      primary: {
+        main: '#087EA4',
+      },
+    },
+  })
+
   const todoListComponents = todolists.map((tl) => {
     let filteredTasks = tasks[tl.id];
     if (tl.filter === "active")
@@ -115,31 +144,61 @@ function App() {
       filteredTasks = tasks[tl.id].filter((t) => t.isDone);
 
     return (
-      <TodoList
-        key={tl.id}
-        id={tl.id}
-        title={tl.title}
-        activeFilter={tl.filter}
-        isDone={tl.isDone}
-        tasks={filteredTasks}
-        changeFilter={changeFilter}
-        deleteTask={deleteTask}
-        createTask={createTask}
-        changeTaskStateHandler={changeTaskState}
-        renameTask={renameTask}
-        deleteTLHandler={deleteTodoList}
-      />
+      <Grid key={tl.id}>
+        <Paper elevation={4} sx={{ p: '0 20px 20px 20px'}}>
+          <TodoList
+            key={tl.id}
+            id={tl.id}
+            title={tl.title}
+            activeFilter={tl.filter}
+            isDone={tl.isDone}
+            tasks={filteredTasks}
+            changeFilter={changeFilter}
+            deleteTask={deleteTask}
+            createTask={createTask}
+            changeTaskStateHandler={changeTaskState}
+            renameTask={renameTask}
+            deleteTLHandler={deleteTodoList}
+          />
+        </Paper>
+      </Grid>
     );
   });
 
   return (
-    <>
-      <AddItem
-        title="Add new Todo List"
-        addItemHandler={(title: string) => createTodoList(title)}
-      />
-      {todoListComponents}
-    </>
+    <div>
+      <ThemeProvider theme={theme}>
+        <CssBaseline/>
+          <AppBar position="static" sx={{ mb: '30px'}}>
+            <Toolbar>
+              <Container maxWidth="lg" sx={containerSx}>
+                <IconButton color="inherit" aria-label="menu">
+                  <MenuIcon/>
+                </IconButton>
+                <div>
+                  <NavButton >Sign in</NavButton>
+                  <NavButton >Sign up</NavButton>
+                  <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
+                  <Switch color={'default'} onChange={changeMode} />
+
+                </div>
+              </Container>
+            </Toolbar>
+          </AppBar>
+          <Container maxWidth="lg">
+            <Grid container sx={{ mb: '30px'}}> 
+              <AddItem
+              title="Add new Todo List"
+              addItemHandler={(title: string) => createTodoList(title)}
+            />
+            </Grid>
+            <Grid container spacing={5}>
+              {todoListComponents}  
+            </Grid> 
+          </Container>
+      </ThemeProvider>
+      
+    </div>
   );
 }
 

@@ -1,6 +1,7 @@
-import { CirclePlus } from "lucide-react";
 import { useState, ChangeEvent } from "react";
-import { Button } from "./Button";
+import Button from '@mui/material/Button';
+import { AddCircleOutlineOutlined } from "@mui/icons-material";
+import { TextField } from "@mui/material";
 
 export const AddItem = (props: {
   title: string;
@@ -27,26 +28,26 @@ export const AddItem = (props: {
 
   return (
     <>
-      <div onClick={() => setInputState(!isInputActive)}>
-        <CirclePlus size={20} color="#e14747" />
-        <span>{title}</span>
-      </div>
+      <Button variant="text" startIcon={<AddCircleOutlineOutlined/>} onClick={() => setInputState(!isInputActive)}>
+        {title}
+      </Button>
 
       {isInputActive && (
         <form>
-          <input
+          <TextField autoFocus
             onChange={inputChangeHandler}
-            type="text"
+            variant="standard"
             value={inputValue}
             onKeyDown={(e) => e.key === 'Enter' && submitHandler()}
           />
-          <Button name="Cancel" clickHandler={() => cencleHandler()} />
+          <Button variant="outlined" size="small" onClick={() => cencleHandler()}>Cancel</Button>
           <Button
-            name="Save"
+            variant="outlined"
+            size="small"
             type="submit"
-            clickHandler={() => submitHandler()}
-            isDisabled={!inputValue.length}
-          />
+            onClick={() => submitHandler()}
+            disabled={!inputValue.length}
+          >Save</Button>
         </form>
       )}
     </>
