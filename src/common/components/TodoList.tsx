@@ -11,10 +11,10 @@ type TTLProps = {
   id: string;
   title: string;
   activeFilter: TFilter;
-  isDone: boolean;
   tasks: TTask[];
 
   changeFilter: (filter: TFilter, id: string) => void;
+  changeTitle: (title: string, id: string) => void;
   deleteTask: (taskId: string, id: string) => void;
   createTask: (name: string, id: string) => void;
   changeTaskStateHandler: (taskId: string, id: string) => void;
@@ -27,9 +27,9 @@ export const TodoList = (props: TTLProps) => {
     id,
     title,
     activeFilter,
-    isDone,
     tasks,
     changeFilter,
+    changeTitle,
     deleteTask,
     createTask,
     deleteTLHandler,
@@ -39,10 +39,8 @@ export const TodoList = (props: TTLProps) => {
 
   return (
     <div>
-      <span>{title}</span>
-      {/* <span onClick={() => deleteTLHandler(id)}>
-        <Trash2 size={20} />
-      </span> */}
+      <EditableSpan value={title} onChange={(newTitle) => changeTitle(newTitle, id)}/>
+
       <IconButton aria-label="delete" onClick={()=>deleteTLHandler(id)}>
         <DeleteOutline/>
       </IconButton>
