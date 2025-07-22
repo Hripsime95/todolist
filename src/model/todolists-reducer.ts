@@ -31,9 +31,13 @@ export type ChangeTodolistFilterAction = ReturnType<typeof changeTodolistFilterA
 type TAction = DeleteTodolistAction | CreateTodolistAction | ChangeTodolistTitleAction | ChangeTodolistFilterAction
 
 //Initial state
-const initialState: TTodolist[] = [];
+const initialState: TTodolist[] = [{
+                id: '123456',
+                title: 'esim',
+                filter: 'all'
+            }];
 
-export const todolistsReducer = (state: TTodolist[] = initialState, action: TAction): TTodolist[] =>  {
+export const todolistsReducer = (state: TTodolist[] = initialState, action: TAction): TTodolist[] =>  {    
     switch(action.type){
         case 'delete_todolist': {
             return state.filter((tl) => tl.id !== action.payload.id)

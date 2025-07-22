@@ -1,6 +1,6 @@
 import {v1} from 'uuid'
 import { beforeEach, expect, test } from 'vitest'
-import type {TTodolist} from '../App'
+import type {TFilter, TTodolist} from '../App'
 import {changeTodolistFilterAC, changeTodolistTitleAC, createTodolistAC, deleteTodolistAC, todolistsReducer} from './todolists-reducer'
 
 let todolistId1: string
@@ -43,7 +43,7 @@ test('correct todolist should change its title', () => {
 })
 
 test('correct todolist should change its filter', () => {
-  const filter = 'completed'
+  const filter: TFilter = 'completed'
   const endState = todolistsReducer(startState, changeTodolistFilterAC({id: todolistId2, filter}))
  
   expect(endState[0].filter).toBe('all')

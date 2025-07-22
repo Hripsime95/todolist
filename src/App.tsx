@@ -1,5 +1,4 @@
 import { useReducer, useState } from "react";
-import { v1 } from "uuid";
 import { AddItem } from "./common/components/AddItem";
 import { TodoList } from "./common/components/TodoList";
 import AppBar from "@mui/material/AppBar";
@@ -15,16 +14,14 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from '@mui/material/CssBaseline'
 import Switch from "@mui/material/Switch";
 import { changeTodolistFilterAC, changeTodolistTitleAC, createTodolistAC, deleteTodolistAC, todolistsReducer } from "./model/todolists-reducer";
+import { changeTaskNameAC, changeTaskStatusAC, createTaskAC, deleteTaskAC, tasksReducer } from "./model/tasks-reducer";
 
 export type TFilter = "all" | "active" | "completed";
-// export type TPriority = 1 | 2 | 3;
 
 export type TTodolist = {
   id: string;
   title: string;
-  // isDone: boolean;
   filter: TFilter;
-  // priority: 1 | 2 | 3 | 4;
 };
 
 export type TTask = {
@@ -40,22 +37,10 @@ export type TTasks = {
 type ThemeMode = 'dark' | 'light'
 
 function App() {
-  const todolistId1 = v1();
-  const todolistId2 = v1();
 
   const [todolists, dispatchToTodolists] = useReducer(todolistsReducer, [])
 
-  const [tasks, setTasks] = useState<TTasks>({
-    [todolistId1]: [
-      { id: v1(), name: "HTML&CSS", isDone: true },
-      { id: v1(), name: "JS", isDone: true },
-      { id: v1(), name: "ReactJS", isDone: false },
-    ],
-    [todolistId2]: [
-      { id: v1(), name: "Rest API", isDone: true },
-      { id: v1(), name: "GraphQL", isDone: false },
-    ],
-  });
+  const [tasks, dispatchTasks] = useReducer(tasksReducer, {});
 
   const [themeMode, setThemeMode] = useState<ThemeMode>('light')
 
@@ -70,42 +55,31 @@ function App() {
   function createTodoList(title: string) {
     const action = createTodolistAC(title);
     dispatchToTodolists(action)
-    setTasks({ ...tasks, [action.payload.id]: [] });
+    dispatchTasks(action);
   }
 
   function changeFilter(filter: TFilter, id: string) {
     dispatchToTodolists(changeTodolistFilterAC({id, filter}))
   }
 
-  function changeTitle(title: TFilter, id: string) {
+  function changeTitle(title: string, id: string) {
     dispatchToTodolists(changeTodolistTitleAC({id, title}))
   }
 
   function deleteTask(taskId: string, id: string) {
-    let newTasks = tasks[id].filter((t) => t.id !== taskId);
-    setTasks({ ...tasks, [id]: newTasks });
+   dispatchTasks(deleteTaskAC({todolistId:id, taskId:taskId}))
   }
 
   function createTask(name: string, id: string) {
-    const newTask = { id: v1(), name, isDone: false };
-    tasks[id].push(newTask);
-    setTasks({ ...tasks });
+    dispatchTasks(createTaskAC({todolistId:id, name}));
   }
 
   function renameTask(name: string, taskId: string, id: string) {
-    const updatedTasks = tasks[id].map((t) => {
-      if (t.id === taskId) t.name = name;
-      return t;
-    });
-    setTasks({ ...tasks, [id]: updatedTasks });
+    dispatchTasks(changeTaskNameAC({todolistId:id, taskId, name}));
   }
 
   function changeTaskState(taskId: string, id: string) {
-    const updatedTasks = tasks[id].map((t) => {
-      if (t.id === taskId) t.isDone = !t.isDone;
-      return t;
-    });
-    setTasks({ ...tasks, [id]: updatedTasks });
+    dispatchTasks(changeTaskStatusAC({todolistId:id, taskId}));
   }
 
   const theme = createTheme({
