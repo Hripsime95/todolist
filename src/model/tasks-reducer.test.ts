@@ -1,5 +1,5 @@
 import { beforeEach, expect, test } from 'vitest'
-import { TTasks } from '../App'
+import { TTasks } from '../app/App'
 import { changeTaskNameAC, changeTaskStatusAC, createTaskAC, deleteTaskAC, tasksReducer } from './tasks-reducer'
 import { createTodolistAC, deleteTodolistAC } from './todolists-reducer'
 

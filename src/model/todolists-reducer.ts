@@ -1,4 +1,4 @@
-import { TFilter, TTodolist } from "../App";
+import { TFilter, TTodolist } from "../app/App";
 import { v1 } from 'uuid';
 
 //Action criators
@@ -31,11 +31,7 @@ export type ChangeTodolistFilterAction = ReturnType<typeof changeTodolistFilterA
 type TAction = DeleteTodolistAction | CreateTodolistAction | ChangeTodolistTitleAction | ChangeTodolistFilterAction
 
 //Initial state
-const initialState: TTodolist[] = [{
-                id: '123456',
-                title: 'esim',
-                filter: 'all'
-            }];
+const initialState: TTodolist[] = [];
 
 export const todolistsReducer = (state: TTodolist[] = initialState, action: TAction): TTodolist[] =>  {    
     switch(action.type){

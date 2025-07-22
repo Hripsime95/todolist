@@ -1,4 +1,4 @@
-import type { TFilter, TTask } from "../../App";
+import type { TFilter, TTask } from "../../app/App";
 import { AddItem } from "./AddItem";
 // import { Button } from "./Button";
 import { EditableSpan } from "./EditableSpan";

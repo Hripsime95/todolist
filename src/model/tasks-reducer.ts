@@ -1,5 +1,5 @@
 import { v1 } from 'uuid';
-import type {TTasks} from '../App'
+import type {TTasks} from '../app/App'
 import { CreateTodolistAction, DeleteTodolistAction } from './todolists-reducer'
 
 //Action creators
