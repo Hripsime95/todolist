@@ -15,8 +15,10 @@ import CssBaseline from '@mui/material/CssBaseline'
 import Switch from "@mui/material/Switch";
 import { changeTodolistFilterAC, changeTodolistTitleAC, createTodolistAC, deleteTodolistAC } from "../model/todolists-reducer";
 import { changeTaskNameAC, changeTaskStatusAC, createTaskAC, deleteTaskAC } from "../model/tasks-reducer";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "./store";
+import { useAppDispatch } from "./useAppDispatch";
+import { useAppSelector } from "./useAppSelector";
+import { selectTodolists } from "../model/todolists-selectors";
+import { selectTasks } from "../model/tasks-selectors";
 
 export type TFilter = "all" | "active" | "completed";
 
@@ -39,15 +41,12 @@ export type TTasks = {
 type ThemeMode = 'dark' | 'light'
 
 function App() {
-  const dispatch = useDispatch();
 
-  const todolists = useSelector<RootState, TTodolist[]>(state => state.todolists)
+  const dispatch = useAppDispatch();
 
-  const tasks = useSelector<RootState, TTasks>(state => state.tasks);
-  console.log('todolists:' , todolists);
-  console.log('tasks:', tasks);
-  
-  
+  const todolists = useAppSelector(selectTodolists)
+
+  const tasks = useAppSelector(selectTasks);
 
   const [themeMode, setThemeMode] = useState<ThemeMode>('light')
 
@@ -56,7 +55,7 @@ function App() {
   }
 
   function deleteTodoList(id: string) {
-    dispatch(deleteTodolistAC(id));
+    dispatch(deleteTodolistAC({id}));
   }
 
   function createTodoList(title: string) {
