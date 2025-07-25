@@ -19,6 +19,9 @@ import { useAppDispatch } from "./useAppDispatch";
 import { useAppSelector } from "./useAppSelector";
 import { selectTodolists } from "../model/todolists-selectors";
 import { selectTasks } from "../model/tasks-selectors";
+import { selectThemeMode } from "./app-selectors";
+import { changeThemeModeAC } from "./app-reducer";
+import { getTheme } from "../common/theme/theme";
 
 export type TFilter = "all" | "active" | "completed";
 
@@ -38,7 +41,6 @@ export type TTasks = {
   [key: string]: TTask[];
 };
 
-type ThemeMode = 'dark' | 'light'
 
 function App() {
 
@@ -48,10 +50,10 @@ function App() {
 
   const tasks = useAppSelector(selectTasks);
 
-  const [themeMode, setThemeMode] = useState<ThemeMode>('light')
+  const themeMode = useAppSelector(selectThemeMode)
 
   const changeMode = () =>{
-    setThemeMode(themeMode === 'dark' ? 'light' : 'dark')
+    dispatch(changeThemeModeAC({themeMode: themeMode === 'dark' ? 'light' : 'dark'}))
   }
 
   function deleteTodoList(id: string) {
@@ -87,14 +89,7 @@ function App() {
     dispatch(changeTaskStatusAC({todolistId:id, taskId}));
   }
 
-  const theme = createTheme({
-    palette: {
-      mode: themeMode,
-      primary: {
-        main: '#087EA4',
-      },
-    },
-  })
+  const theme = getTheme(themeMode)
 
   const todoListComponents = todolists.map((tl) => {
     let filteredTasks = tasks[tl.id];
