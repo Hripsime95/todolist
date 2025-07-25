@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import { AddCircleOutlineOutlined } from "@mui/icons-material";
 import { TextField } from "@mui/material";
 
-export const AddItem = (props: {
+export const CreateItemForm = (props: {
   title: string;
   addItemHandler: (name: string) => void;
 }) => {
