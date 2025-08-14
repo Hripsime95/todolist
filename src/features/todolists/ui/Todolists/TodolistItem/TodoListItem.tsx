@@ -1,15 +1,14 @@
 import { useAppDispatch } from '@/app/useAppDispatch';
 import { useAppSelector } from '@/app/useAppSelector';
-import { FilterButtons } from "@/FilterButtons";
-import { createTaskAC } from '@/model/tasks-reducer';
-import { selectTasks } from '@/model/tasks-selectors';
-import { Tasks } from "@/Tasks";
-import { TFilter, TTodolist } from '@/Todolists';
-import { TodolistTitle } from "@/TodolistTitle";
-import { List } from "@mui/material";
+import { FilterButtons } from "@/features/todolists/ui/Todolists/TodolistItem/FilterButtons/FilterButtons";
+import { Tasks } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/Tasks";
+import { TodolistTitle } from "@/features/todolists/ui/Todolists/TodolistItem/TodolistTitle/TodolistTitle";
+import { TFilter, TTodolist } from '@/features/todolists/ui/Todolists/Todolists';
 import Box from '@mui/material/Box';
-import { containerSx } from "../styles/TodolistItem.styles";
-import { CreateItemForm } from "./CreateItemForm";
+import { CreateItemForm } from "../../../../../common/components/CreateItemForm/CreateItemForm";
+import { containerSx } from "../../../../../common/styles/container.styles";
+import { selectTasks } from '@/features/todolists/model/tasks-selectors';
+import { createTaskAC } from '@/features/todolists/model/tasks-reducer';
 
 export type TTask = {
   id: string;

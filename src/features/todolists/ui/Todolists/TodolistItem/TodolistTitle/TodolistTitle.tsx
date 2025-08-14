@@ -1,8 +1,8 @@
 import { IconButton } from "@mui/material"
-import { EditableSpan } from "./common/components/EditableSpan"
 import { DeleteOutline } from "@mui/icons-material"
-import { useAppDispatch } from "./app/useAppDispatch"
-import { changeTodolistTitleAC, deleteTodolistAC } from "./model/todolists-reducer"
+import { useAppDispatch } from "@/app/useAppDispatch"
+import { changeTodolistTitleAC, deleteTodolistAC } from "@/features/todolists/model/todolists-reducer"
+import { EditableSpan } from "@/common/components/EditableSpan/EditableSpan"
 
 type TProps = {
     title: string,

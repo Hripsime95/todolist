@@ -1,6 +1,6 @@
 import { List } from "@mui/material";
-import { TTask, TTasks } from "./common/components/TodoListItem";
-import { TaskItem } from "./TaskItem";
+import { TTask, TTasks } from "../TodoListItem";
+import { TaskItem } from "./TaskItem/TaskItem";
 
 type TProps = {
     id: string,

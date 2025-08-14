@@ -1,10 +1,10 @@
 import { Checkbox, IconButton, ListItem } from "@mui/material"
-import { EditableSpan } from "./common/components/EditableSpan"
+import { EditableSpan } from "@/common/components/EditableSpan/EditableSpan"
 import Clear from "@mui/icons-material/Clear"
-import { TTask } from "./common/components/TodoListItem"
-import { useAppDispatch } from "./app/useAppDispatch"
-import { getListItemSx } from "./common/styles/TodolistItem.styles"
-import { changeTaskNameAC, changeTaskStatusAC, deleteTaskAC } from "./model/tasks-reducer"
+import { TTask } from "../../TodoListItem"
+import { useAppDispatch } from "@/app/useAppDispatch"
+import { getListItemSx } from "./TaskItem.styles"
+import { changeTaskNameAC, changeTaskStatusAC, deleteTaskAC } from "@/features/todolists/model/tasks-reducer"
 
 type TProps = {
     todoListId: string,

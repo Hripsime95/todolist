@@ -1,7 +1,7 @@
 import { Grid, Paper } from "@mui/material";
-import { useAppSelector } from "./app/useAppSelector";
-import { TodoListItem } from "./common/components/TodoListItem";
-import { selectTodolists } from "./model/todolists-selectors";
+import { useAppSelector } from "../../../../app/useAppSelector";
+import { TodoListItem } from "./TodolistItem/TodoListItem";
+import { selectTodolists } from "../../model/todolists-selectors";
 
 export type TFilter = "all" | "active" | "completed";
 

@@ -1,7 +1,7 @@
-import { containerSx } from "@/common/styles/TodolistItem.styles"
+import { containerSx } from "@/common/styles/container.styles"
 import { AppBar, Container, IconButton, Switch, Toolbar } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu";
-import { NavButton } from "../NavButton"
+import { NavButton } from "../NavButton/NavButton"
 import { getTheme } from "@/common/theme/theme";
 import { useAppSelector } from "@/app/useAppSelector";
 import { changeThemeModeAC } from "@/app/app-reducer";
