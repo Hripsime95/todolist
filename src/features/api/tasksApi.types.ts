@@ -1,20 +1,22 @@
 export type DomainTask = {
-  description: string
-  title: string
-  status: number
-  priority: number
-  startDate: string
-  deadline: string
-  id: string
-  todoListId: string
-  order: number
-  addedDate: string
-}
+  description: string;
+  title: string;
+  status: number;
+  priority: number;
+  startDate: string;
+  deadline: string;
+  id: string;
+  todoListId: string;
+  order: number;
+  addedDate: string;
+};
 
 export type GetTasksResponse = {
-  error: string | null
-  totalCount: number
-  items: DomainTask[]
-}
+  error: string | null;
+  totalCount: number;
+  items: DomainTask[];
+};
 
-export type UpdateTaskModel = Partial<Omit<DomainTask, "todoListId" | "id" | "addedDate">>;
+export type UpdateTaskModel = Partial<
+  Omit<DomainTask, 'todoListId' | 'id' | 'addedDate'>
+>;

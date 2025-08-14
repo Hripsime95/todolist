@@ -1,7 +1,7 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent } from 'react';
 import Button from '@mui/material/Button';
-import { AddCircleOutlineOutlined } from "@mui/icons-material";
-import { TextField } from "@mui/material";
+import { AddCircleOutlineOutlined } from '@mui/icons-material';
+import { TextField } from '@mui/material';
 
 export const CreateItemForm = (props: {
   title: string;
@@ -10,7 +10,7 @@ export const CreateItemForm = (props: {
   const { title, addItemHandler } = props;
 
   const [isInputActive, setInputState] = useState(false);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
 
   function inputChangeHandler(e: ChangeEvent<HTMLInputElement>) {
     setInputValue(e.currentTarget.value);
@@ -18,7 +18,7 @@ export const CreateItemForm = (props: {
 
   function cencleHandler() {
     setInputState(false);
-    setInputValue("");
+    setInputValue('');
   }
 
   function submitHandler() {
@@ -28,26 +28,39 @@ export const CreateItemForm = (props: {
 
   return (
     <>
-      <Button variant="text" startIcon={<AddCircleOutlineOutlined/>} onClick={() => setInputState(!isInputActive)}>
+      <Button
+        variant="text"
+        startIcon={<AddCircleOutlineOutlined />}
+        onClick={() => setInputState(!isInputActive)}
+      >
         {title}
       </Button>
 
       {isInputActive && (
         <form>
-          <TextField autoFocus
+          <TextField
+            autoFocus
             onChange={inputChangeHandler}
             variant="standard"
             value={inputValue}
             onKeyDown={(e) => e.key === 'Enter' && submitHandler()}
           />
-          <Button variant="outlined" size="small" onClick={() => cencleHandler()}>Cancel</Button>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => cencleHandler()}
+          >
+            Cancel
+          </Button>
           <Button
             variant="outlined"
             size="small"
             type="submit"
             onClick={() => submitHandler()}
             disabled={!inputValue.length}
-          >Save</Button>
+          >
+            Save
+          </Button>
         </form>
       )}
     </>

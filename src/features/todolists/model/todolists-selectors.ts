@@ -1,4 +1,5 @@
-import type { TTodolist } from "../app/App";
-import type { RootState } from "../app/store";
+import type { TTodolist } from '../app/App';
+import type { RootState } from '../app/store';
 
-export const selectTodolists = (state: RootState): TTodolist[] => state.todolists;
+export const selectTodolists = (state: RootState): TTodolist[] =>
+  state.todolists;
