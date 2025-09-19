@@ -1,5 +1,5 @@
 import { CreateItemForm } from '@/common/components/CreateItemForm/CreateItemForm';
-import { createTodolistAC } from '@/features/todolists/model/todolists-reducer';
+import { createTodolistAC } from '@/features/todolists/model/todolists-slice';
 import { Todolists } from '@/features/todolists/ui/Todolists/Todolists';
 import { Container, Grid } from '@mui/material';
 import { useAppDispatch } from '../common/hooks/useAppDispatch';

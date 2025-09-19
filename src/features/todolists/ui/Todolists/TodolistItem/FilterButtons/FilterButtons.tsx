@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import { TFilter } from '../../Todolists';
-import { changeTodolistFilterAC } from '@/features/todolists/model/todolists-reducer';
+import { changeTodolistFilterAC } from '@/features/todolists/model/todolists-slice';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch';
 
 type TProps = {

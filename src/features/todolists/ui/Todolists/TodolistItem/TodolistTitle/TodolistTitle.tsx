@@ -4,7 +4,7 @@ import { useAppDispatch } from '@/common/hooks/useAppDispatch';
 import {
   changeTodolistTitleAC,
   deleteTodolistAC,
-} from '@/features/todolists/model/todolists-reducer';
+} from '@/features/todolists/model/todolists-slice';
 import { EditableSpan } from '@/common/components/EditableSpan/EditableSpan';
 
 type TProps = {

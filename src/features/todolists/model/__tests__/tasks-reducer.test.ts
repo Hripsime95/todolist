@@ -6,7 +6,7 @@ import {
   deleteTaskAC,
   tasksReducer,
 } from '../tasks-reducer';
-import { createTodolistAC, deleteTodolistAC } from '../todolists-reducer';
+import { createTodolistAC, deleteTodolistAC } from '../todolists-slice';
 import { TTasks } from '../../ui/Todolists/TodolistItem/TodoListItem';
 
 let startState: TTasks = {};

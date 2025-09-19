@@ -1,5 +1,5 @@
 import { createAction, createReducer, nanoid } from '@reduxjs/toolkit';
-import { createTodolistAC, deleteTodolistAC } from './todolists-reducer';
+import { createTodolistAC, deleteTodolistAC } from './todolists-slice';
 import { TTasks } from '../ui/Todolists/TodolistItem/TodoListItem';
 
 //Action creators
