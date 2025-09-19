@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import { TFilter } from '../../Todolists';
 import { changeTodolistFilterAC } from '@/features/todolists/model/todolists-reducer';
-import { useAppDispatch } from '@/app/useAppDispatch';
+import { useAppDispatch } from '@/common/hooks/useAppDispatch';
 
 type TProps = {
   id: string;

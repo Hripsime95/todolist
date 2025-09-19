@@ -3,10 +3,10 @@ import { AppBar, Container, IconButton, Switch, Toolbar } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { NavButton } from '../NavButton/NavButton';
 import { getTheme } from '@/common/theme/theme';
-import { useAppSelector } from '@/app/useAppSelector';
+import { useAppSelector } from '@/common/hooks/useAppSelector';
 import { changeThemeModeAC } from '@/app/app-reducer';
 import { selectThemeMode } from '@/app/app-selectors';
-import { useAppDispatch } from '@/app/useAppDispatch';
+import { useAppDispatch } from '@/common/hooks/useAppDispatch';
 
 export const Header = () => {
   const dispatch = useAppDispatch();

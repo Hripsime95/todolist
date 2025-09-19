@@ -2,7 +2,7 @@ import { Checkbox, IconButton, ListItem } from '@mui/material';
 import { EditableSpan } from '@/common/components/EditableSpan/EditableSpan';
 import Clear from '@mui/icons-material/Clear';
 import { TTask } from '../../TodoListItem';
-import { useAppDispatch } from '@/app/useAppDispatch';
+import { useAppDispatch } from '@/common/hooks/useAppDispatch';
 import { getListItemSx } from './TaskItem.styles';
 import {
   changeTaskNameAC,

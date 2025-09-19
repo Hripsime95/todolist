@@ -1,4 +1,4 @@
-import type { TTasks } from '../app/App';
-import type { RootState } from '../app/store';
+import { RootState } from '@/app/store';
+import { TTasks } from '../ui/Todolists/TodolistItem/TodoListItem';
 
 export const selectTasks = (state: RootState): TTasks => state.tasks;

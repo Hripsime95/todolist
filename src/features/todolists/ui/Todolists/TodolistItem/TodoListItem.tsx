@@ -1,5 +1,5 @@
-import { useAppDispatch } from '@/app/useAppDispatch';
-import { useAppSelector } from '@/app/useAppSelector';
+import { useAppDispatch } from '@/common/hooks/useAppDispatch';
+import { useAppSelector } from '@/common/hooks/useAppSelector';
 import { FilterButtons } from '@/features/todolists/ui/Todolists/TodolistItem/FilterButtons/FilterButtons';
 import { Tasks } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/Tasks';
 import { TodolistTitle } from '@/features/todolists/ui/Todolists/TodolistItem/TodolistTitle/TodolistTitle';

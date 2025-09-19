@@ -2,7 +2,7 @@ import { CreateItemForm } from '@/common/components/CreateItemForm/CreateItemFor
 import { createTodolistAC } from '@/features/todolists/model/todolists-reducer';
 import { Todolists } from '@/features/todolists/ui/Todolists/Todolists';
 import { Container, Grid } from '@mui/material';
-import { useAppDispatch } from './useAppDispatch';
+import { useAppDispatch } from '../common/hooks/useAppDispatch';
 
 export const Main = () => {
   const dispatch = useAppDispatch();

@@ -4,7 +4,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { getTheme } from '../common/theme/theme';
 import { selectThemeMode } from './app-selectors';
 import { Main } from './Main';
-import { useAppSelector } from './useAppSelector';
+import { useAppSelector } from '../common/hooks/useAppSelector';
 
 function App() {
   const themeMode = useAppSelector(selectThemeMode);
