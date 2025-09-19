@@ -1,4 +1,4 @@
-import { ThemeMode } from './app-reducer';
+import { ThemeMode } from './app-slice';
 import { RootState } from './store';
 
 export const selectThemeMode = (state: RootState): ThemeMode =>
