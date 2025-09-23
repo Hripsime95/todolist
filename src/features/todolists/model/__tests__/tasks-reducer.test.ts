@@ -5,7 +5,7 @@ import {
   createTaskAC,
   deleteTaskAC,
   tasksReducer,
-} from '../tasks-reducer';
+} from '../tasks-slice';
 import { createTodolistAC, deleteTodolistAC } from '../todolists-slice';
 import { TTasks } from '../../ui/Todolists/TodolistItem/TodoListItem';
 

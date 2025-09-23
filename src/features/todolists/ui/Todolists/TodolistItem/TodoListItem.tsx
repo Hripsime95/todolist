@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 import { CreateItemForm } from '../../../../../common/components/CreateItemForm/CreateItemForm';
 import { containerSx } from '../../../../../common/styles/container.styles';
 import { selectTasks } from '@/features/todolists/model/tasks-selectors';
-import { createTaskAC } from '@/features/todolists/model/tasks-reducer';
+import { createTaskAC } from '@/features/todolists/model/tasks-slice';
 
 export type TTask = {
   id: string;

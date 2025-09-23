@@ -8,7 +8,7 @@ import {
   changeTaskNameAC,
   changeTaskStatusAC,
   deleteTaskAC,
-} from '@/features/todolists/model/tasks-reducer';
+} from '@/features/todolists/model/tasks-slice';
 
 type TProps = {
   todoListId: string;
