@@ -4,8 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { NavButton } from '../NavButton/NavButton';
 import { getTheme } from '@/common/theme/theme';
 import { useAppSelector } from '@/common/hooks/useAppSelector';
-import { changeThemeModeAC } from '@/app/app-slice';
-import { selectThemeMode } from '@/app/app-selectors';
+import { changeThemeModeAC, selectThemeMode } from '@/app/app-slice';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch';
 
 export const Header = () => {

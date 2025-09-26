@@ -1,5 +1,5 @@
 import { List } from '@mui/material';
-import { TTask, TTasks } from '../TodoListItem';
+import { TTask } from '../TodoListItem';
 import { TaskItem } from './TaskItem/TaskItem';
 
 type TProps = {
@@ -12,11 +12,11 @@ export const Tasks = (props: TProps) => {
 
   return (
     <>
-      {tasks.length === 0 ? (
+      {tasks?.length === 0 ? (
         <p> Тасок нет </p>
       ) : (
         <List>
-          {tasks.map((task) => {
+          {tasks?.map((task) => {
             return <TaskItem key={task.id} todoListId={id} task={task} />;
           })}
         </List>
