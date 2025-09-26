@@ -1,21 +1,35 @@
 import { Todolist } from './../../api/todolistsApi.types';
-import {
-  createAsyncThunk,
-  createSlice,
-  current,
-  nanoid,
-} from '@reduxjs/toolkit';
+import { createAsyncThunk, current, nanoid } from '@reduxjs/toolkit';
 import { TFilter } from '../ui/Todolists/Todolists';
 import { todolistsApi } from '@/features/api/todolistsApi';
+import { createAppSlice } from '@/common/utils';
 
 export type DomainTodolist = Todolist & {
   filter: TFilter;
 };
 
-export const todolistsSlce = createSlice({
+export const todolistsSlce = createAppSlice({
   name: 'todolists',
   initialState: [] as DomainTodolist[],
   reducers: (create) => ({
+    fetchTodolists: create.asyncThunk(
+      async (_arg, thunkAPI) => {
+        const { rejectWithValue } = thunkAPI;
+        try {
+          const res = await todolistsApi.getTodolists();
+          return { todolists: res.data };
+        } catch (e) {
+          rejectWithValue(e);
+        }
+      },
+      {
+        fulfilled: (state, action) => {
+          action.payload?.todolists.forEach((t) => {
+            state.push({ ...t, filter: 'all' });
+          });
+        },
+      },
+    ),
     deleteTodolistAC: create.reducer<{ id: string }>((state, action) => {
       const index = state.findIndex((t) => t.id == action.payload.id);
       if (index !== -1) {
@@ -52,29 +66,10 @@ export const todolistsSlce = createSlice({
       },
     ),
   }),
-  extraReducers: (builder) => {
-    builder.addCase(fetchTodolists.fulfilled, (_state, action) => {
-      return action.payload?.todolists.map((t) => {
-        return { ...t, filter: 'all' };
-      });
-    });
-  },
 });
 
-export const fetchTodolists = createAsyncThunk(
-  `${todolistsSlce.name}/fetchTodolistsTC`,
-  async (_arg, thunkAPI) => {
-    const { rejectWithValue } = thunkAPI;
-    try {
-      const res = await todolistsApi.getTodolists();
-      return { todolists: res.data };
-    } catch (e) {
-      rejectWithValue(e);
-    }
-  },
-);
-
 export const {
+  fetchTodolists,
   deleteTodolistAC,
   changeTodolistTitleAC,
   changeTodolistFilterAC,

@@ -10,8 +10,8 @@ import {
 import Box from '@mui/material/Box';
 import { CreateItemForm } from '../../../../../common/components/CreateItemForm/CreateItemForm';
 import { containerSx } from '../../../../../common/styles/container.styles';
-import { selectTasks } from '@/features/todolists/model/tasks-selectors';
 import { createTaskAC } from '@/features/todolists/model/tasks-slice';
+import { DomainTask } from '@/features/api/tasksApi.types';
 
 export type TTask = {
   id: string;
@@ -20,28 +20,16 @@ export type TTask = {
 };
 
 export type TTasks = {
-  [key: string]: TTask[];
+  [key: string]: DomainTask[];
 };
 
 export const TodoListItem = (props: { todolist: TTodolist }) => {
-  const tasks = useAppSelector(selectTasks);
   const dispatch = useAppDispatch();
 
   const { id, title, filter } = props.todolist;
 
   function createTask(name: string, id: string) {
-    dispatch(createTaskAC({ todolistId: id, name }));
-  }
-
-  let filteredTasks = getFilteredTasks(filter);
-
-  function getFilteredTasks(filter: TFilter) {
-    let fTasks = tasks[id];
-    if (filter === 'active') fTasks = tasks[id].filter((t: TTask) => !t.isDone);
-    if (filter === 'completed')
-      fTasks = tasks[id].filter((t: TTask) => t.isDone);
-
-    return fTasks;
+    dispatch(createTaskAC({ todolistId: id, title: name }));
   }
 
   return (
@@ -51,7 +39,7 @@ export const TodoListItem = (props: { todolist: TTodolist }) => {
         title="Add Task"
         addItemHandler={(name: string) => createTask(name, id)}
       />
-      <Tasks id={id} tasks={filteredTasks} />
+      <Tasks id={id} filter={filter} />
       <Box sx={containerSx}>
         <FilterButtons filter={filter} id={id} />
       </Box>

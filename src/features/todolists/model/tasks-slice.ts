@@ -1,11 +1,30 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { nanoid } from '@reduxjs/toolkit';
 import { createTodolistAC, deleteTodolistAC } from './todolists-slice';
 import { TTasks } from '../ui/Todolists/TodolistItem/TodoListItem';
+import { createAppSlice } from '@/common/utils';
+import { tasksApi } from '@/features/api/tasksApi';
+import { DomainTask } from '@/features/api/tasksApi.types';
+import { TaskPriority, TaskStatus } from '@/common/enums';
 
-export const tasksSlice = createSlice({
+export const tasksSlice = createAppSlice({
   name: 'tasks',
   initialState: {} as TTasks,
   reducers: (create) => ({
+    fetchTasks: create.asyncThunk(
+      async (todolistId: string, thunkAPI) => {
+        try {
+          const res = await tasksApi.getTasks(todolistId);
+          return { todolistId, tasks: res.data.items };
+        } catch (error) {
+          return thunkAPI.rejectWithValue(null);
+        }
+      },
+      {
+        fulfilled: (state, action) => {
+          state[action.payload.todolistId] = action.payload.tasks;
+        },
+      },
+    ),
     deleteTaskAC: create.reducer<{ todolistId: string; taskId: string }>(
       (state, action) => {
         const { todolistId, taskId } = action.payload;
@@ -16,23 +35,39 @@ export const tasksSlice = createSlice({
     changeTaskNameAC: create.reducer<{
       todolistId: string;
       taskId: string;
-      name: string;
+      title: string;
     }>((state, action) => {
-      const { todolistId, taskId, name } = action.payload;
-      const task = state[todolistId].find((t) => (t.id = taskId));
-      if (task) task.name = name;
+      const { todolistId, taskId, title } = action.payload;
+      const task = state[todolistId].find((t) => t.id === taskId);
+      if (task) task.title = title;
     }),
-    changeTaskStatusAC: create.reducer<{ todolistId: string; taskId: string }>(
+    changeTaskStatusAC: create.reducer<{
+      todolistId: string;
+      taskId: string;
+      isDone: boolean;
+    }>((state, action) => {
+      const { todolistId, taskId } = action.payload;
+      const task = state[todolistId].find((t) => t.id === taskId);
+      if (task)
+        task.status = action.payload.isDone
+          ? TaskStatus.Completed
+          : TaskStatus.New;
+    }),
+    createTaskAC: create.reducer<{ todolistId: string; title: string }>(
       (state, action) => {
-        const { todolistId, taskId } = action.payload;
-        const task = state[todolistId].find((t) => (t.id = taskId));
-        if (task) task.isDone = !task.isDone;
-      },
-    ),
-    createTaskAC: create.reducer<{ todolistId: string; name: string }>(
-      (state, action) => {
-        const { todolistId, name } = action.payload;
-        state[todolistId].push({ name, id: nanoid(), isDone: false });
+        const newTask: DomainTask = {
+          title: action.payload.title,
+          todoListId: action.payload.todolistId,
+          startDate: '',
+          priority: TaskPriority.Low,
+          description: '',
+          deadline: '',
+          status: TaskStatus.New,
+          addedDate: '',
+          order: 0,
+          id: nanoid(),
+        };
+        state[action.payload.todolistId].unshift(newTask);
       },
     ),
   }),
@@ -48,6 +83,7 @@ export const tasksSlice = createSlice({
 });
 
 export const {
+  fetchTasks,
   createTaskAC,
   deleteTaskAC,
   changeTaskNameAC,
