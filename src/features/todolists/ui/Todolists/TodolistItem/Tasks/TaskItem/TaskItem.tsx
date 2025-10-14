@@ -3,11 +3,7 @@ import { EditableSpan } from '@/common/components/EditableSpan/EditableSpan';
 import Clear from '@mui/icons-material/Clear';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch';
 import { getListItemSx } from './TaskItem.styles';
-import {
-  changeTaskNameAC,
-  changeTaskStatusAC,
-  deleteTaskAC,
-} from '@/features/todolists/model/tasks-slice';
+import { deleteTask, updateTask } from '@/features/todolists/model/tasks-slice';
 import { DomainTask } from '@/features/api/tasksApi.types';
 import { TaskStatus } from '@/common/enums';
 
@@ -18,14 +14,13 @@ type TProps = {
 
 export const TaskItem = (props: TProps) => {
   const { todoListId, task } = props;
-  console.log('taskId: ', task.id);
 
   const dispatch = useAppDispatch();
 
   const isTaskCompleted = task.status === TaskStatus.Completed;
 
   function renameTask(title: string, taskId: string, id: string) {
-    dispatch(changeTaskNameAC({ todolistId: id, taskId, title }));
+    dispatch(updateTask({ todolistId: id, taskId, domainModel: { title } }));
   }
 
   function changeTaskState(args: {
@@ -34,16 +29,18 @@ export const TaskItem = (props: TProps) => {
     isDone: boolean;
   }) {
     dispatch(
-      changeTaskStatusAC({
+      updateTask({
         todolistId: args.id,
         taskId: args.taskId,
-        isDone: args.isDone,
+        domainModel: {
+          status: args.isDone ? TaskStatus.Completed : TaskStatus.New,
+        },
       }),
     );
   }
 
-  function deleteTask(taskId: string, id: string) {
-    dispatch(deleteTaskAC({ todolistId: id, taskId: taskId }));
+  function handleDeleteTask(taskId: string, id: string) {
+    dispatch(deleteTask({ todolistId: id, taskId: taskId }));
   }
 
   return (
@@ -62,7 +59,10 @@ export const TaskItem = (props: TProps) => {
         value={task.title}
         onChange={(newName) => renameTask(newName, task.id, todoListId)}
       ></EditableSpan>
-      <IconButton size="small" onClick={() => deleteTask(task.id, todoListId)}>
+      <IconButton
+        size="small"
+        onClick={() => handleDeleteTask(task.id, todoListId)}
+      >
         {' '}
         <Clear />
       </IconButton>

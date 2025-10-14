@@ -20,12 +20,18 @@ export const tasksApi = {
   updateTask(args: {
     todolistId: string;
     taskId: string;
-    payload: UpdateTaskModel;
+    model: UpdateTaskModel;
   }) {
-    const { todolistId, taskId, payload } = args;
+    const { todolistId, taskId, model } = args;
     return instance.put<BaseResponse<{ item: DomainTask }>>(
       `/todo-lists/${todolistId}/tasks/${taskId}`,
-      payload,
+      model,
+    );
+  },
+  deleteTask(args: { todolistId: string; taskId: string }) {
+    const { todolistId, taskId } = args;
+    return instance.delete<BaseResponse<{ item: DomainTask }>>(
+      `/todo-lists/${todolistId}/tasks/${taskId}`,
     );
   },
 };

@@ -5,7 +5,7 @@ import { TextField } from '@mui/material';
 
 export const CreateItemForm = (props: {
   title: string;
-  addItemHandler: (name: string) => void;
+  addItemHandler: (title: string) => void;
 }) => {
   const { title, addItemHandler } = props;
 

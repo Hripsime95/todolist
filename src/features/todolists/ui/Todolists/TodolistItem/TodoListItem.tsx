@@ -10,7 +10,7 @@ import {
 import Box from '@mui/material/Box';
 import { CreateItemForm } from '../../../../../common/components/CreateItemForm/CreateItemForm';
 import { containerSx } from '../../../../../common/styles/container.styles';
-import { createTaskAC } from '@/features/todolists/model/tasks-slice';
+import { createTask } from '@/features/todolists/model/tasks-slice';
 import { DomainTask } from '@/features/api/tasksApi.types';
 
 export type TTask = {
@@ -28,8 +28,8 @@ export const TodoListItem = (props: { todolist: TTodolist }) => {
 
   const { id, title, filter } = props.todolist;
 
-  function createTask(name: string, id: string) {
-    dispatch(createTaskAC({ todolistId: id, title: name }));
+  function handleCreateTask(title: string, id: string) {
+    dispatch(createTask({ todolistId: id, title }));
   }
 
   return (
@@ -37,7 +37,7 @@ export const TodoListItem = (props: { todolist: TTodolist }) => {
       <TodolistTitle title={title} id={id} />
       <CreateItemForm
         title="Add Task"
-        addItemHandler={(name: string) => createTask(name, id)}
+        addItemHandler={(title: string) => handleCreateTask(title, id)}
       />
       <Tasks id={id} filter={filter} />
       <Box sx={containerSx}>

@@ -2,8 +2,8 @@ import { IconButton } from '@mui/material';
 import { DeleteOutline } from '@mui/icons-material';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch';
 import {
-  changeTodolistTitleAC,
-  deleteTodolistAC,
+  changeTodolistTitle,
+  deleteTodolist,
 } from '@/features/todolists/model/todolists-slice';
 import { EditableSpan } from '@/common/components/EditableSpan/EditableSpan';
 
@@ -15,12 +15,12 @@ type TProps = {
 export const TodolistTitle = (props: TProps) => {
   const dispatch = useAppDispatch();
 
-  function deleteTodoList(id: string) {
-    dispatch(deleteTodolistAC({ id }));
+  function handleDeleteTodoList(id: string) {
+    dispatch(deleteTodolist({ id }));
   }
 
   function changeTitle(title: string, id: string) {
-    dispatch(changeTodolistTitleAC({ id, title }));
+    dispatch(changeTodolistTitle({ id, title }));
   }
 
   const { title, id } = props;
@@ -31,7 +31,7 @@ export const TodolistTitle = (props: TProps) => {
         onChange={(newTitle) => changeTitle(newTitle, id)}
       />
 
-      <IconButton aria-label="delete" onClick={() => deleteTodoList(id)}>
+      <IconButton aria-label="delete" onClick={() => handleDeleteTodoList(id)}>
         <DeleteOutline />
       </IconButton>
     </>
