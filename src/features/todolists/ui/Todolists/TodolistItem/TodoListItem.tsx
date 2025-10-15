@@ -12,6 +12,7 @@ import { CreateItemForm } from '../../../../../common/components/CreateItemForm/
 import { containerSx } from '../../../../../common/styles/container.styles';
 import { createTask } from '@/features/todolists/model/tasks-slice';
 import { DomainTask } from '@/features/api/tasksApi.types';
+import { DomainTodolist } from '@/features/todolists/model/todolists-slice';
 
 export type TTask = {
   id: string;
@@ -23,10 +24,10 @@ export type TTasks = {
   [key: string]: DomainTask[];
 };
 
-export const TodoListItem = (props: { todolist: TTodolist }) => {
+export const TodoListItem = (props: { todolist: DomainTodolist }) => {
   const dispatch = useAppDispatch();
 
-  const { id, title, filter } = props.todolist;
+  const { id, title, filter, entityStatus } = props.todolist;
 
   function handleCreateTask(title: string, id: string) {
     dispatch(createTask({ todolistId: id, title }));
@@ -34,10 +35,11 @@ export const TodoListItem = (props: { todolist: TTodolist }) => {
 
   return (
     <div>
-      <TodolistTitle title={title} id={id} />
+      <TodolistTitle title={title} id={id} entityStatus={entityStatus} />
       <CreateItemForm
         title="Add Task"
         addItemHandler={(title: string) => handleCreateTask(title, id)}
+        disabled={entityStatus === 'loading'}
       />
       <Tasks id={id} filter={filter} />
       <Box sx={containerSx}>

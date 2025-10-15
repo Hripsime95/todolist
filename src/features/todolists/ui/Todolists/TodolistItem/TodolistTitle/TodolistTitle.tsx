@@ -6,24 +6,28 @@ import {
   deleteTodolist,
 } from '@/features/todolists/model/todolists-slice';
 import { EditableSpan } from '@/common/components/EditableSpan/EditableSpan';
+import { RequestStatus } from '@/common/types/types';
 
 type TProps = {
   title: string;
   id: string;
+  entityStatus: RequestStatus;
 };
 
 export const TodolistTitle = (props: TProps) => {
   const dispatch = useAppDispatch();
 
   function handleDeleteTodoList(id: string) {
+    console.log(props);
     dispatch(deleteTodolist({ id }));
+    debugger;
   }
 
   function changeTitle(title: string, id: string) {
     dispatch(changeTodolistTitle({ id, title }));
   }
 
-  const { title, id } = props;
+  const { title, id, entityStatus } = props;
   return (
     <>
       <EditableSpan
@@ -31,7 +35,11 @@ export const TodolistTitle = (props: TProps) => {
         onChange={(newTitle) => changeTitle(newTitle, id)}
       />
 
-      <IconButton aria-label="delete" onClick={() => handleDeleteTodoList(id)}>
+      <IconButton
+        aria-label="delete"
+        onClick={() => handleDeleteTodoList(id)}
+        disabled={entityStatus == 'loading'}
+      >
         <DeleteOutline />
       </IconButton>
     </>

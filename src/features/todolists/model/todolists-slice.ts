@@ -1,12 +1,13 @@
 import { Todolist } from './../../api/todolistsApi.types';
-import { createAsyncThunk, current, nanoid } from '@reduxjs/toolkit';
 import { TFilter } from '../ui/Todolists/Todolists';
 import { todolistsApi } from '@/features/api/todolistsApi';
 import { createAppSlice } from '@/common/utils';
 import { setAppStatusAC } from '@/app/app-slice';
+import { RequestStatus } from '@/common/types/types';
 
 export type DomainTodolist = Todolist & {
   filter: TFilter;
+  entityStatus: RequestStatus;
 };
 
 export const todolistsSlce = createAppSlice({
@@ -15,7 +16,6 @@ export const todolistsSlce = createAppSlice({
   reducers: (create) => ({
     fetchTodolists: create.asyncThunk(
       async (_arg, thunkAPI) => {
-        const { rejectWithValue } = thunkAPI;
         try {
           thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }));
           const res = await todolistsApi.getTodolists();
@@ -23,27 +23,30 @@ export const todolistsSlce = createAppSlice({
           return { todolists: res.data };
         } catch (e) {
           thunkAPI.dispatch(setAppStatusAC({ status: 'failed' }));
-          rejectWithValue(e);
+          thunkAPI.rejectWithValue(e);
         }
       },
       {
         fulfilled: (state, action) => {
           action.payload?.todolists.forEach((t) => {
-            state.push({ ...t, filter: 'all' });
+            state.push({ ...t, filter: 'all', entityStatus: 'succeeded' });
           });
         },
       },
     ),
     deleteTodolist: create.asyncThunk(
-      async (payload: { id: string }, thunkAPI) => {
+      async (payload: { id: string }, { dispatch, rejectWithValue }) => {
         try {
-          thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }));
+          dispatch(setAppStatusAC({ status: 'loading' }));
+          dispatch(
+            changeTodolistStatusAC({ id: payload.id, status: 'loading' }),
+          );
           todolistsApi.deleteTodolist(payload.id);
-          thunkAPI.dispatch(setAppStatusAC({ status: 'succeeded' }));
+          dispatch(setAppStatusAC({ status: 'succeeded' }));
           return payload;
         } catch (error) {
-          thunkAPI.dispatch(setAppStatusAC({ status: 'failed' }));
-          return thunkAPI.rejectWithValue(null);
+          dispatch(setAppStatusAC({ status: 'failed' }));
+          return rejectWithValue(null);
         }
       },
       {
@@ -96,6 +99,7 @@ export const todolistsSlce = createAppSlice({
             filter: 'all',
             addedDate: '',
             order: 0,
+            entityStatus: 'succeeded',
           });
         },
       },
@@ -108,6 +112,15 @@ export const todolistsSlce = createAppSlice({
         }
       },
     ),
+    changeTodolistStatusAC: create.reducer<{
+      id: string;
+      status: RequestStatus;
+    }>((state, action) => {
+      const index = state.findIndex((t) => t.id == action.payload.id);
+      if (index != -1) {
+        state[index].entityStatus = action.payload.status;
+      }
+    }),
   }),
 });
 
@@ -116,6 +129,7 @@ export const {
   deleteTodolist,
   changeTodolistTitle,
   changeTodolistFilterAC,
+  changeTodolistStatusAC,
   createTodolist,
 } = todolistsSlce.actions;
 export const todolistsReducer = todolistsSlce.reducer;

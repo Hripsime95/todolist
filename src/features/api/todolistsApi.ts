@@ -16,7 +16,6 @@ export const todolistsApi = {
     });
   },
   deleteTodolist(id: string) {
-    debugger;
     return instance.delete<BaseResponse>(`/todo-lists/${id}`);
   },
 };

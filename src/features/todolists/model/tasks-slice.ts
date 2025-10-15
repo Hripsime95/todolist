@@ -4,7 +4,10 @@ import { tasksApi } from '@/features/api/tasksApi';
 import { UpdateTaskModel } from '@/features/api/tasksApi.types';
 import { TaskStatus } from '@/common/enums';
 import { RootState } from '@/app/store';
-import { setAppStatusAC } from '@/app/app-slice';
+import { setAppErrorAC, setAppStatusAC } from '@/app/app-slice';
+import { ResultCode } from '@/common/enums/enums';
+import { handleServerAppError } from '@/common/utils/handleServerAppError';
+import { handleServerNetworkError } from '@/common/utils/handleServerNetworkError';
 
 export const tasksSlice = createAppSlice({
   name: 'tasks',
@@ -61,6 +64,7 @@ export const tasksSlice = createAppSlice({
         },
         { dispatch, getState, rejectWithValue },
       ) => {
+        const { todolistId, taskId, domainModel } = payload;
         const allTodolistTasks = (getState() as RootState).tasks[
           payload.todolistId
         ];
@@ -71,43 +75,54 @@ export const tasksSlice = createAppSlice({
         if (!task) {
           return rejectWithValue(null);
         }
-        const model: UpdateTaskModel = { ...task, ...payload.domainModel };
+        const model: UpdateTaskModel = { ...task, ...domainModel };
         try {
           dispatch(setAppStatusAC({ status: 'loading' }));
-          await tasksApi.updateTask({
-            todolistId: payload.todolistId,
-            taskId: payload.taskId,
-            model,
-          });
-          dispatch(setAppStatusAC({ status: 'succeeded' }));
-          return payload;
-        } catch (error) {
+          const res = await tasksApi.updateTask({ todolistId, taskId, model });
+          if (res.data.resultCode === ResultCode.Success) {
+            dispatch(setAppStatusAC({ status: 'succeeded' }));
+            return { task: res.data.data.item };
+          } else {
+            handleServerAppError(res.data, dispatch);
+            return rejectWithValue(null);
+          }
+        } catch (error: any) {
           dispatch(setAppStatusAC({ status: 'failed' }));
+          handleServerNetworkError(error, dispatch);
           return rejectWithValue(null);
         }
       },
       {
         fulfilled: (state, action) => {
-          const tasks = state[action.payload.todolistId];
-          const index = state[action.payload.todolistId].findIndex(
-            (task) => task.id === action.payload.taskId,
+          const tasks = state[action.payload.task.todoListId];
+          const index = state[action.payload.task.todoListId].findIndex(
+            (task) => task.id === action.payload.task.id,
           );
           if (index != -1) {
-            tasks[index] = { ...tasks[index], ...action.payload.domainModel };
+            tasks[index] = { ...action.payload.task };
           }
         },
       },
     ),
     createTask: create.asyncThunk(
-      async (args: { todolistId: string; title: string }, thunkAPI) => {
+      async (
+        args: { todolistId: string; title: string },
+        { dispatch, rejectWithValue },
+      ) => {
         try {
-          thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }));
+          dispatch(setAppStatusAC({ status: 'loading' }));
           const res = await tasksApi.createTask(args);
-          thunkAPI.dispatch(setAppStatusAC({ status: 'succeeded' }));
-          return { task: res.data.data.item };
-        } catch (error) {
-          thunkAPI.dispatch(setAppStatusAC({ status: 'failed' }));
-          return thunkAPI.rejectWithValue(null);
+          if (res.data.resultCode === ResultCode.Success) {
+            dispatch(setAppStatusAC({ status: 'succeeded' }));
+            return { task: res.data.data.item };
+          } else {
+            handleServerAppError(res.data, dispatch);
+            return rejectWithValue(null);
+          }
+        } catch (error: any) {
+          dispatch(setAppErrorAC({ error: error.message }));
+          handleServerNetworkError(error, dispatch);
+          return rejectWithValue(null);
         }
       },
       {

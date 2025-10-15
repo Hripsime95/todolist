@@ -6,8 +6,9 @@ import { TextField } from '@mui/material';
 export const CreateItemForm = (props: {
   title: string;
   addItemHandler: (title: string) => void;
+  disabled?: boolean;
 }) => {
-  const { title, addItemHandler } = props;
+  const { title, addItemHandler, disabled } = props;
 
   const [isInputActive, setInputState] = useState(false);
   const [inputValue, setInputValue] = useState('');
@@ -32,6 +33,7 @@ export const CreateItemForm = (props: {
         variant="text"
         startIcon={<AddCircleOutlineOutlined />}
         onClick={() => setInputState(!isInputActive)}
+        disabled={disabled}
       >
         {title}
       </Button>
