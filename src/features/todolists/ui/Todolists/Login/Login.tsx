@@ -11,12 +11,11 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import styles from './Login.module.css';
-
-type LoginInputs = {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-};
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  LoginInputs,
+  loginSchema,
+} from '@/features/auth/lib/schemas/login.schema';
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode);
@@ -31,7 +30,9 @@ export const Login = () => {
     formState: { errors },
   } = useForm<LoginInputs>({
     defaultValues: { email: '', password: '', rememberMe: false },
+    resolver: zodResolver(loginSchema),
   });
+  console.log('errors: ', errors);
 
   const onSubmit: SubmitHandler<LoginInputs> = (data) => {
     console.log(data);
@@ -84,8 +85,20 @@ export const Login = () => {
               type="password"
               label="Password"
               margin="normal"
-              {...register('password')}
+              error={!!errors.password}
+              {...register('password', {
+                required: 'Password is required',
+                minLength: {
+                  value: 3,
+                  message: 'Min Length of password should be 3',
+                },
+              })}
             />
+            {errors.password && (
+              <span className={styles.errorMessage}>
+                {errors.password.message}
+              </span>
+            )}
             <FormControlLabel
               label="Remember me"
               control={

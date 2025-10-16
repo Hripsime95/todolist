@@ -1,6 +1,6 @@
-import { Todolist } from './../../api/todolistsApi.types';
+import { Todolist } from '../api/todolistsApi.types';
 import { TFilter } from '../ui/Todolists/Todolists';
-import { todolistsApi } from '@/features/api/todolistsApi';
+import { todolistsApi } from '@/features/todolists/api/todolistsApi';
 import { createAppSlice } from '@/common/utils';
 import { setAppStatusAC } from '@/app/app-slice';
 import { RequestStatus } from '@/common/types/types';

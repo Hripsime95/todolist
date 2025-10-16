@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 import { CreateItemForm } from '../../../../../common/components/CreateItemForm/CreateItemForm';
 import { containerSx } from '../../../../../common/styles/container.styles';
 import { createTask } from '@/features/todolists/model/tasks-slice';
-import { DomainTask } from '@/features/api/tasksApi.types';
+import { DomainTask } from '@/features/todolists/api/tasksApi.types';
 import { DomainTodolist } from '@/features/todolists/model/todolists-slice';
 
 export type TTask = {

@@ -1,8 +1,10 @@
 import { TTasks } from '../ui/Todolists/TodolistItem/TodoListItem';
 import { createAppSlice } from '@/common/utils';
-import { tasksApi } from '@/features/api/tasksApi';
-import { UpdateTaskModel } from '@/features/api/tasksApi.types';
-import { TaskStatus } from '@/common/enums';
+import { tasksApi } from '@/features/todolists/api/tasksApi';
+import {
+  domainTaskSchema,
+  UpdateTaskModel,
+} from '@/features/todolists/api/tasksApi.types';
 import { RootState } from '@/app/store';
 import { setAppErrorAC, setAppStatusAC } from '@/app/app-slice';
 import { ResultCode } from '@/common/enums/enums';
@@ -14,15 +16,19 @@ export const tasksSlice = createAppSlice({
   initialState: {} as TTasks,
   reducers: (create) => ({
     fetchTasks: create.asyncThunk(
-      async (todolistId: string, thunkAPI) => {
+      async (todolistId: string, { dispatch, rejectWithValue }) => {
         try {
-          thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }));
+          dispatch(setAppStatusAC({ status: 'loading' }));
           const res = await tasksApi.getTasks(todolistId);
-          thunkAPI.dispatch(setAppStatusAC({ status: 'succeeded' }));
+          // debugger;
+          domainTaskSchema.array().parse(res.data.items); // Zod 💎
+
+          dispatch(setAppStatusAC({ status: 'succeeded' }));
           return { todolistId, tasks: res.data.items };
         } catch (error) {
-          thunkAPI.dispatch(setAppStatusAC({ status: 'failed' }));
-          return thunkAPI.rejectWithValue(null);
+          handleServerNetworkError(error, dispatch);
+          dispatch(setAppStatusAC({ status: 'failed' }));
+          return rejectWithValue(null);
         }
       },
       {

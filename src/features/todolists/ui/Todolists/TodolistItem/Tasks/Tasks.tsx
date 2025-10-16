@@ -6,7 +6,7 @@ import { selectTasks } from '@/features/todolists/model/tasks-selectors';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch';
 import { useEffect } from 'react';
 import { fetchTasks } from '@/features/todolists/model/tasks-slice';
-import { DomainTask } from '@/features/api/tasksApi.types';
+import { DomainTask } from '@/features/todolists/api/tasksApi.types';
 import { TaskStatus } from '@/common/enums';
 
 type TProps = {

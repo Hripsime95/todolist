@@ -4,7 +4,7 @@ import Clear from '@mui/icons-material/Clear';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch';
 import { getListItemSx } from './TaskItem.styles';
 import { deleteTask, updateTask } from '@/features/todolists/model/tasks-slice';
-import { DomainTask } from '@/features/api/tasksApi.types';
+import { DomainTask } from '@/features/todolists/api/tasksApi.types';
 import { TaskStatus } from '@/common/enums';
 
 type TProps = {
