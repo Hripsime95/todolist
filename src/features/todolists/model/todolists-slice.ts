@@ -7,7 +7,7 @@ import { RequestStatus } from '@/common/types/types';
 
 export type DomainTodolist = Todolist & {
   filter: TFilter;
-  entityStatus: RequestStatus;
+  entityStatus?: RequestStatus;
 };
 
 export const todolistsSlce = createAppSlice({

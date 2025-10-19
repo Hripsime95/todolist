@@ -20,7 +20,6 @@ export const TodolistTitle = (props: TProps) => {
   function handleDeleteTodoList(id: string) {
     console.log(props);
     dispatch(deleteTodolist({ id }));
-    debugger;
   }
 
   function changeTitle(title: string, id: string) {
