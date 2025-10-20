@@ -10,10 +10,23 @@ import { setAppErrorAC, setAppStatusAC } from '@/app/app-slice';
 import { ResultCode } from '@/common/enums/enums';
 import { handleServerAppError } from '@/common/utils/handleServerAppError';
 import { handleServerNetworkError } from '@/common/utils/handleServerNetworkError';
+import { createTodolist, deleteTodolist } from './todolists-slice';
 
 export const tasksSlice = createAppSlice({
   name: 'tasks',
   initialState: {} as TTasks,
+  selectors: {
+    selectTasks: (state) => state,
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(createTodolist.fulfilled, (state, action) => {
+        state[action.payload.todolist.id] = [];
+      })
+      .addCase(deleteTodolist.fulfilled, (state, action) => {
+        delete state[action.payload.id];
+      });
+  },
   reducers: (create) => ({
     fetchTasks: create.asyncThunk(
       async (todolistId: string, { dispatch, rejectWithValue }) => {
@@ -101,6 +114,7 @@ export const tasksSlice = createAppSlice({
       {
         fulfilled: (state, action) => {
           const tasks = state[action.payload.task.todoListId];
+          debugger;
           const index = state[action.payload.task.todoListId].findIndex(
             (task) => task.id === action.payload.task.id,
           );
@@ -139,6 +153,7 @@ export const tasksSlice = createAppSlice({
     ),
   }),
 });
+export const { selectTasks } = tasksSlice.selectors;
 
 export const { fetchTasks, createTask, deleteTask, updateTask } =
   tasksSlice.actions;

@@ -121,13 +121,43 @@ test('correct task should be deleted', () => {
 
   expect(endState).toEqual({
     todolistId1: [
-      { id: '1', name: 'CSS', isDone: false },
-      { id: '2', name: 'JS', isDone: true },
-      { id: '3', name: 'React', isDone: false },
+      {
+        id: '1',
+        title: 'CSS',
+        status: TaskStatus.New,
+        todoListId: 'todolistId1',
+        ...taskDefaultValues,
+      },
+      {
+        id: '2',
+        title: 'JS',
+        status: TaskStatus.Completed,
+        todoListId: 'todolistId1',
+        ...taskDefaultValues,
+      },
+      {
+        id: '3',
+        title: 'React',
+        status: TaskStatus.New,
+        todoListId: 'todolistId1',
+        ...taskDefaultValues,
+      },
     ],
     todolistId2: [
-      { id: '1', name: 'bread', isDone: false },
-      { id: '3', name: 'tea', isDone: false },
+      {
+        id: '1',
+        title: 'bread',
+        status: TaskStatus.New,
+        todoListId: 'todolistId2',
+        ...taskDefaultValues,
+      },
+      {
+        id: '3',
+        title: 'tea',
+        status: TaskStatus.New,
+        todoListId: 'todolistId2',
+        ...taskDefaultValues,
+      },
     ],
   });
 });
@@ -192,7 +222,7 @@ test('correct task should change its status', () => {
         task: {
           id: '2',
           title: 'Redux',
-          status: TaskStatus.Completed,
+          status: TaskStatus.New,
           todoListId: 'todolistId1',
           ...taskDefaultValues,
         },
@@ -201,10 +231,10 @@ test('correct task should change its status', () => {
       {
         todolistId: 'todolistId1',
         taskId: '2',
-        domainModel: { status: TaskStatus.Completed },
+        domainModel: { status: TaskStatus.New },
       },
     ),
   );
 
-  expect(endState.todolistId1[2].status).toBe(TaskStatus.Completed);
+  expect(endState.todolistId1[2].status).toBe(TaskStatus.New);
 });

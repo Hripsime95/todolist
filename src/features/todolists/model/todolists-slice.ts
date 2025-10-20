@@ -13,6 +13,9 @@ export type DomainTodolist = Todolist & {
 export const todolistsSlce = createAppSlice({
   name: 'todolists',
   initialState: [] as DomainTodolist[],
+  selectors: {
+    selectTodolists: (state) => state,
+  },
   reducers: (create) => ({
     fetchTodolists: create.asyncThunk(
       async (_arg, thunkAPI) => {
@@ -123,6 +126,8 @@ export const todolistsSlce = createAppSlice({
     }),
   }),
 });
+
+export const { selectTodolists } = todolistsSlce.selectors;
 
 export const {
   fetchTodolists,
