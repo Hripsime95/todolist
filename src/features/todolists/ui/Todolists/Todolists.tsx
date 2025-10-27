@@ -1,10 +1,9 @@
 import { Grid, Paper } from '@mui/material';
 import { useAppSelector } from '../../../../common/hooks/useAppSelector';
 import { TodoListItem } from './TodolistItem/TodoListItem';
-import { selectTodolists } from '../../model/todolists-selectors';
 import { useEffect } from 'react';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch';
-import { fetchTodolists } from '../../model/todolists-slice';
+import { fetchTodolists, selectTodolists } from '../../model/todolists-slice';
 
 export type TFilter = 'all' | 'active' | 'completed';
 

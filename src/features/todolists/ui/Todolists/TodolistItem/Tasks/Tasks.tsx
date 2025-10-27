@@ -2,10 +2,12 @@ import { List } from '@mui/material';
 import { TaskItem } from './TaskItem/TaskItem';
 import { TFilter } from '../../Todolists';
 import { useAppSelector } from '@/common/hooks/useAppSelector';
-import { selectTasks } from '@/features/todolists/model/tasks-selectors';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch';
 import { useEffect } from 'react';
-import { fetchTasks } from '@/features/todolists/model/tasks-slice';
+import {
+  fetchTasks,
+  selectTasks,
+} from '@/features/todolists/model/tasks-slice';
 import { DomainTask } from '@/features/todolists/api/tasksApi.types';
 import { TaskStatus } from '@/common/enums';
 

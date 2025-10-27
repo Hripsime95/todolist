@@ -4,17 +4,25 @@ import { todolistsApi } from '@/features/todolists/api/todolistsApi';
 import { createAppSlice } from '@/common/utils';
 import { setAppStatusAC } from '@/app/app-slice';
 import { RequestStatus } from '@/common/types/types';
+import { clearDataAC } from '@/common/actions';
 
 export type DomainTodolist = Todolist & {
   filter: TFilter;
   entityStatus?: RequestStatus;
 };
 
+const initialState: DomainTodolist[] = [];
+
 export const todolistsSlce = createAppSlice({
   name: 'todolists',
-  initialState: [] as DomainTodolist[],
+  initialState,
   selectors: {
     selectTodolists: (state) => state,
+  },
+  extraReducers: (builder) => {
+    builder.addCase(clearDataAC, (_state, _action) => {
+      return initialState;
+    });
   },
   reducers: (create) => ({
     fetchTodolists: create.asyncThunk(

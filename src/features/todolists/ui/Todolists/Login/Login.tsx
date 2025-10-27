@@ -1,5 +1,5 @@
 import { selectThemeMode } from '@/app/app-slice';
-import { useAppSelector } from '@/common/hooks';
+import { useAppDispatch, useAppSelector } from '@/common/hooks';
 import { getTheme } from '@/common/theme';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -16,8 +16,12 @@ import {
   LoginInputs,
   loginSchema,
 } from '@/features/auth/lib/schemas/login.schema';
+import { login, selectIsLoggined } from '@/features/auth/model/auth-slice';
+import { Navigate } from 'react-router';
+import { Path } from '@/common/routing';
 
 export const Login = () => {
+  const dispatch = useAppDispatch();
   const themeMode = useAppSelector(selectThemeMode);
 
   const theme = getTheme(themeMode);
@@ -32,11 +36,11 @@ export const Login = () => {
     defaultValues: { email: '', password: '', rememberMe: false },
     resolver: zodResolver(loginSchema),
   });
-  console.log('errors: ', errors);
 
   const onSubmit: SubmitHandler<LoginInputs> = (data) => {
-    console.log(data);
-    reset();
+    dispatch(login(data))
+      .unwrap()
+      .then(() => reset());
   };
 
   return (

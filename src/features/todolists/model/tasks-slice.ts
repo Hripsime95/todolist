@@ -11,10 +11,13 @@ import { ResultCode } from '@/common/enums/enums';
 import { handleServerAppError } from '@/common/utils/handleServerAppError';
 import { handleServerNetworkError } from '@/common/utils/handleServerNetworkError';
 import { createTodolist, deleteTodolist } from './todolists-slice';
+import { clearDataAC } from '@/common/actions';
+
+const initialState: TTasks = {};
 
 export const tasksSlice = createAppSlice({
   name: 'tasks',
-  initialState: {} as TTasks,
+  initialState,
   selectors: {
     selectTasks: (state) => state,
   },
@@ -25,6 +28,9 @@ export const tasksSlice = createAppSlice({
       })
       .addCase(deleteTodolist.fulfilled, (state, action) => {
         delete state[action.payload.id];
+      })
+      .addCase(clearDataAC, (_state, _action) => {
+        return initialState;
       });
   },
   reducers: (create) => ({

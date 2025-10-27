@@ -8,6 +8,7 @@ import {
   tasksReducer,
   tasksSlice,
 } from '@/features/todolists/model/tasks-slice';
+import { authReducer, authSlice } from '@/features/auth/model/auth-slice';
 
 // объединение reducer'ов с помощью combineReducers
 // const rootReducer = combineReducers({
@@ -22,6 +23,7 @@ export const store = configureStore({
     [tasksSlice.name]: tasksReducer,
     [todolistsSlce.name]: todolistsReducer,
     [appSlice.name]: appReducer,
+    [authSlice.name]: authReducer,
   },
 });
 

@@ -11,6 +11,7 @@ import {
   selectThemeMode,
 } from '@/app/app-slice';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch';
+import { logout } from '@/features/auth/model/auth-slice';
 
 export const Header = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +26,10 @@ export const Header = () => {
     );
   };
 
+  function handleLogut() {
+    dispatch(logout());
+  }
+
   return (
     <AppBar position="static" sx={{ mb: '30px' }}>
       <Toolbar>
@@ -33,8 +38,7 @@ export const Header = () => {
             <MenuIcon />
           </IconButton>
           <div>
-            <NavButton>Sign in</NavButton>
-            <NavButton>Sign up</NavButton>
+            <NavButton onClick={handleLogut}>Logout</NavButton>
             <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
             <Switch color={'default'} onChange={changeMode} />
           </div>
