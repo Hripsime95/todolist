@@ -39,7 +39,6 @@ export const tasksSlice = createAppSlice({
         try {
           dispatch(setAppStatusAC({ status: 'loading' }));
           const res = await tasksApi.getTasks(todolistId);
-          // debugger;
           domainTaskSchema.array().parse(res.data.items); // Zod 💎
 
           dispatch(setAppStatusAC({ status: 'succeeded' }));
@@ -120,7 +119,6 @@ export const tasksSlice = createAppSlice({
       {
         fulfilled: (state, action) => {
           const tasks = state[action.payload.task.todoListId];
-          debugger;
           const index = state[action.payload.task.todoListId].findIndex(
             (task) => task.id === action.payload.task.id,
           );

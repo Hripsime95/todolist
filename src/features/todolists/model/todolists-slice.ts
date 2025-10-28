@@ -8,7 +8,7 @@ import { clearDataAC } from '@/common/actions';
 
 export type DomainTodolist = Todolist & {
   filter: TFilter;
-  entityStatus?: RequestStatus;
+  entityStatus: RequestStatus;
 };
 
 const initialState: DomainTodolist[] = [];

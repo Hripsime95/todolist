@@ -29,7 +29,6 @@ function App() {
       </div>
     );
   }
-
   return (
     <div>
       <ThemeProvider theme={theme}>

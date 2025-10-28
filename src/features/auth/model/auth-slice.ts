@@ -8,10 +8,10 @@ import { clearDataAC } from '@/common/actions';
 export const authSlice = createAppSlice({
   name: 'auth',
   initialState: {
-    isLoggined: false,
+    isLoggedIn: false,
   },
   selectors: {
-    selectIsLoggined: (state) => state.isLoggined,
+    selectIsLoggedIn: (state) => state.isLoggedIn,
   },
   reducers: (create) => ({
     login: create.asyncThunk(
@@ -19,7 +19,7 @@ export const authSlice = createAppSlice({
         try {
           const res = await authApi.login(data);
           localStorage.setItem(AUTH_TOKEN, res.data.data.token);
-          return { isLoggined: true };
+          return { isLoggedIn: true };
         } catch (error) {
           handleServerNetworkError(error, dispatch);
           return rejectWithValue(null);
@@ -27,7 +27,7 @@ export const authSlice = createAppSlice({
       },
       {
         fulfilled: (state, action) => {
-          state.isLoggined = action.payload.isLoggined;
+          state.isLoggedIn = action.payload.isLoggedIn;
         },
       },
     ),
@@ -37,7 +37,7 @@ export const authSlice = createAppSlice({
           await authApi.logout();
           localStorage.removeItem(AUTH_TOKEN);
           dispatch(clearDataAC());
-          return { isLoggined: false };
+          return { isLoggedIn: false };
         } catch (error) {
           handleServerNetworkError(error, dispatch);
           return rejectWithValue(null);
@@ -45,7 +45,7 @@ export const authSlice = createAppSlice({
       },
       {
         fulfilled: (state, action) => {
-          state.isLoggined = action.payload.isLoggined;
+          state.isLoggedIn = action.payload.isLoggedIn;
         },
       },
     ),
@@ -53,22 +53,16 @@ export const authSlice = createAppSlice({
       async (_args, { dispatch, rejectWithValue }) => {
         try {
           await authApi.me();
-          return { isLoggined: true };
         } catch (error) {
           handleServerNetworkError(error, dispatch);
           return rejectWithValue(null);
         }
       },
-      {
-        fulfilled: (state, action) => {
-          state.isLoggined = action.payload.isLoggined;
-        },
-      },
     ),
   }),
 });
 
-export const { selectIsLoggined } = authSlice.selectors;
+export const { selectIsLoggedIn } = authSlice.selectors;
 
 export const { login, logout, initializeApp } = authSlice.actions;
 

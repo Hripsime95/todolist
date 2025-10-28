@@ -16,7 +16,7 @@ import {
   LoginInputs,
   loginSchema,
 } from '@/features/auth/lib/schemas/login.schema';
-import { login, selectIsLoggined } from '@/features/auth/model/auth-slice';
+import { login, selectIsLoggedIn } from '@/features/auth/model/auth-slice';
 import { Navigate } from 'react-router';
 import { Path } from '@/common/routing';
 

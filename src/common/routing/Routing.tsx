@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router';
 import { PageNotFound } from '../components';
 import { ProtectedRoute } from '../components/ProtectedRoute/ProtectedRoute';
 import { useAppSelector } from '../hooks';
-import { selectIsLoggined } from '@/features/auth/model/auth-slice';
+import { selectIsLoggedIn } from '@/features/auth/model/auth-slice';
 import { Main } from '@/app/Main';
 
 export const Path = {
@@ -13,13 +13,13 @@ export const Path = {
 } as const;
 
 export const Routing = () => {
-  const isLoggined = useAppSelector(selectIsLoggined);
+  const isLoggedIn = useAppSelector(selectIsLoggedIn);
   return (
     <Routes>
       <Route
         path={Path.Main}
         element={
-          <ProtectedRoute isAllowed={isLoggined} redirectPath={Path.Login}>
+          <ProtectedRoute isAllowed={isLoggedIn} redirectPath={Path.Login}>
             <Main />
           </ProtectedRoute>
         }
@@ -27,7 +27,7 @@ export const Routing = () => {
       <Route
         path={Path.Login}
         element={
-          <ProtectedRoute isAllowed={!isLoggined} redirectPath={Path.Main}>
+          <ProtectedRoute isAllowed={!isLoggedIn} redirectPath={Path.Main}>
             <Login />
           </ProtectedRoute>
         }
