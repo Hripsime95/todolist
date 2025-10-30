@@ -9,6 +9,7 @@ import {
   tasksSlice,
 } from '@/features/todolists/model/tasks-slice';
 import { authReducer, authSlice } from '@/features/auth/model/auth-slice';
+import { todolistsApi } from '@/features/todolists/api/todolistsApi';
 
 // объединение reducer'ов с помощью combineReducers
 // const rootReducer = combineReducers({
@@ -24,7 +25,10 @@ export const store = configureStore({
     [todolistsSlce.name]: todolistsReducer,
     [appSlice.name]: appReducer,
     [authSlice.name]: authReducer,
+    [todolistsApi.reducerPath]: todolistsApi.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(todolistsApi.middleware),
 });
 
 // автоматическое определение типа всего объекта состояния

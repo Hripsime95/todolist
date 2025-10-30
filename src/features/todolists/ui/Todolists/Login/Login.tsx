@@ -1,6 +1,12 @@
 import { selectThemeMode } from '@/app/app-slice';
 import { useAppDispatch, useAppSelector } from '@/common/hooks';
 import { getTheme } from '@/common/theme';
+import {
+  LoginInputs,
+  loginSchema,
+} from '@/features/auth/lib/schemas/login.schema';
+import { login } from '@/features/auth/model/auth-slice';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
@@ -11,14 +17,6 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import styles from './Login.module.css';
-import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  LoginInputs,
-  loginSchema,
-} from '@/features/auth/lib/schemas/login.schema';
-import { login, selectIsLoggedIn } from '@/features/auth/model/auth-slice';
-import { Navigate } from 'react-router';
-import { Path } from '@/common/routing';
 
 export const Login = () => {
   const dispatch = useAppDispatch();

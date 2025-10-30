@@ -1,9 +1,10 @@
 import { Grid, Paper } from '@mui/material';
 import { useAppSelector } from '../../../../common/hooks/useAppSelector';
 import { TodoListItem } from './TodolistItem/TodoListItem';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch';
 import { fetchTodolists, selectTodolists } from '../../model/todolists-slice';
+import { useGetTodolistsQuery } from '../../api/todolistsApi';
 
 export type TFilter = 'all' | 'active' | 'completed';
 
@@ -14,16 +15,19 @@ export type TTodolist = {
 };
 
 export const Todolists = () => {
-  const todolists = useAppSelector(selectTodolists);
-  const dispatch = useAppDispatch();
+  // const todolists = useAppSelector(selectTodolists);
+  // const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(fetchTodolists());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(fetchTodolists());
+  // }, []);
+  const [skip, setSkip] = useState(true);
+
+  const { data: todolists } = useGetTodolistsQuery();
 
   return (
     <>
-      {todolists.map((tl) => {
+      {todolists?.map((tl) => {
         return (
           <Grid key={tl.id}>
             <Paper elevation={4} sx={{ p: '0 20px 20px 20px' }}>

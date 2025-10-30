@@ -1,18 +1,13 @@
 import { useAppDispatch } from '@/common/hooks/useAppDispatch';
-import { useAppSelector } from '@/common/hooks/useAppSelector';
+import { DomainTask } from '@/features/todolists/api/tasksApi.types';
+import { createTask } from '@/features/todolists/model/tasks-slice';
+import { DomainTodolist } from '@/features/todolists/model/todolists-slice';
 import { FilterButtons } from '@/features/todolists/ui/Todolists/TodolistItem/FilterButtons/FilterButtons';
 import { Tasks } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/Tasks';
 import { TodolistTitle } from '@/features/todolists/ui/Todolists/TodolistItem/TodolistTitle/TodolistTitle';
-import {
-  TFilter,
-  TTodolist,
-} from '@/features/todolists/ui/Todolists/Todolists';
 import Box from '@mui/material/Box';
 import { CreateItemForm } from '../../../../../common/components/CreateItemForm/CreateItemForm';
 import { containerSx } from '../../../../../common/styles/container.styles';
-import { createTask } from '@/features/todolists/model/tasks-slice';
-import { DomainTask } from '@/features/todolists/api/tasksApi.types';
-import { DomainTodolist } from '@/features/todolists/model/todolists-slice';
 
 export type TTask = {
   id: string;
