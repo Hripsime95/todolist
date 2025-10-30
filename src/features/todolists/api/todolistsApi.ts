@@ -4,21 +4,9 @@ import { BaseResponse } from '@/common/types/types';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { AUTH_TOKEN } from '@/common/constants';
 import { DomainTodolist } from '../model/todolists-slice';
+import { baseApi } from '@/app/baseApi';
 
-export const todolistsApi = createApi({
-  reducerPath: 'todolistsApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_BASE_URL,
-    headers: {
-      'API-KEY': import.meta.env.VITE_API_KEY,
-    },
-    prepareHeaders: (headers) => {
-      headers.set(
-        'Authorization',
-        `Bearer ${localStorage.getItem(AUTH_TOKEN)}`,
-      );
-    },
-  }),
+export const todolistsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     // Типизация аргументов (<возвращаемый тип, тип query аргументов (`QueryArg`)>)
     // `query` по умолчанию создает запрос `get` и указание метода необязательно
@@ -30,6 +18,33 @@ export const todolistsApi = createApi({
           filter: 'all',
           entityStatus: 'idle',
         })),
+      providesTags: ['Todolist'],
+    }),
+    addTodolist: build.mutation<BaseResponse<{ item: Todolist }>, string>({
+      query: (title) => ({
+        url: 'todo-lists',
+        method: 'POST',
+        body: { title },
+      }),
+      invalidatesTags: ['Todolist'],
+    }),
+    removeTodolist: build.mutation<BaseResponse, string>({
+      query: (id) => ({
+        url: `todo-lists/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Todolist'],
+    }),
+    updateTodolistTitle: build.mutation<
+      BaseResponse,
+      { id: string; title: string }
+    >({
+      query: ({ id, title }) => ({
+        url: `todo-lists/${id}`,
+        method: 'PUT',
+        body: { title },
+      }),
+      invalidatesTags: ['Todolist'],
     }),
   }),
 });
@@ -52,4 +67,9 @@ export const _todolistsApi = {
   },
 };
 
-export const { useGetTodolistsQuery } = todolistsApi;
+export const {
+  useGetTodolistsQuery,
+  useAddTodolistMutation,
+  useRemoveTodolistMutation,
+  useUpdateTodolistTitleMutation,
+} = todolistsApi;

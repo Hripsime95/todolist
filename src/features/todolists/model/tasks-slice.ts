@@ -10,7 +10,7 @@ import { setAppErrorAC, setAppStatusAC } from '@/app/app-slice';
 import { ResultCode } from '@/common/enums/enums';
 import { handleServerAppError } from '@/common/utils/handleServerAppError';
 import { handleServerNetworkError } from '@/common/utils/handleServerNetworkError';
-import { createTodolist, deleteTodolist } from './todolists-slice';
+// import { createTodolist, deleteTodolist } from './todolists-slice';
 import { clearDataAC } from '@/common/actions';
 
 const initialState: TTasks = {};
@@ -23,12 +23,12 @@ export const tasksSlice = createAppSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createTodolist.fulfilled, (state, action) => {
-        state[action.payload.todolist.id] = [];
-      })
-      .addCase(deleteTodolist.fulfilled, (state, action) => {
-        delete state[action.payload.id];
-      })
+      // .addCase(createTodolist.fulfilled, (state, action) => {
+      //   state[action.payload.todolist.id] = [];
+      // })
+      // .addCase(deleteTodolist.fulfilled, (state, action) => {
+      //   delete state[action.payload.id];
+      // })
       .addCase(clearDataAC, (_state, _action) => {
         return initialState;
       });

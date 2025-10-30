@@ -9,17 +9,20 @@ import {
   changeThemeModeAC,
   selectStatus,
   selectThemeMode,
+  setIsLoggedInAC,
 } from '@/app/app-slice';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch';
-import { logout } from '@/features/auth/model/auth-slice';
+import { useLogoutMutation } from '@/features/auth/api/authApi';
+import { ResultCode } from '@/common/enums/enums';
+import { AUTH_TOKEN } from '@/common/constants';
+import { clearDataAC } from '@/common/actions';
 
 export const Header = () => {
   const dispatch = useAppDispatch();
-
+  const [logout] = useLogoutMutation();
   const themeMode = useAppSelector(selectThemeMode);
   const status = useAppSelector(selectStatus);
   const theme = getTheme(themeMode);
-
   const changeMode = () => {
     dispatch(
       changeThemeModeAC({ themeMode: themeMode === 'dark' ? 'light' : 'dark' }),
@@ -27,7 +30,13 @@ export const Header = () => {
   };
 
   function handleLogut() {
-    dispatch(logout());
+    logout().then((res) => {
+      if (res.data?.resultCode === ResultCode.Success) {
+        dispatch(setIsLoggedInAC({ isLoggedIn: false }));
+        localStorage.removeItem(AUTH_TOKEN);
+        dispatch(clearDataAC());
+      }
+    });
   }
 
   return (

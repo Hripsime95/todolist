@@ -1,12 +1,12 @@
 import { IconButton } from '@mui/material';
 import { DeleteOutline } from '@mui/icons-material';
-import { useAppDispatch } from '@/common/hooks/useAppDispatch';
-import {
-  changeTodolistTitle,
-  deleteTodolist,
-} from '@/features/todolists/model/todolists-slice';
+
 import { EditableSpan } from '@/common/components/EditableSpan/EditableSpan';
 import { RequestStatus } from '@/common/types/types';
+import {
+  useRemoveTodolistMutation,
+  useUpdateTodolistTitleMutation,
+} from '@/features/todolists/api/todolistsApi';
 
 type TProps = {
   title: string;
@@ -15,28 +15,20 @@ type TProps = {
 };
 
 export const TodolistTitle = (props: TProps) => {
-  const dispatch = useAppDispatch();
-
-  function handleDeleteTodoList(id: string) {
-    console.log(props);
-    dispatch(deleteTodolist({ id }));
-  }
-
-  function changeTitle(title: string, id: string) {
-    dispatch(changeTodolistTitle({ id, title }));
-  }
+  const [removeTodolist] = useRemoveTodolistMutation();
+  const [updateTodolistTitle] = useUpdateTodolistTitleMutation();
 
   const { title, id, entityStatus } = props;
   return (
     <>
       <EditableSpan
         value={title}
-        onChange={(newTitle) => changeTitle(newTitle, id)}
+        onChange={(newTitle) => updateTodolistTitle({ title: newTitle, id })}
       />
 
       <IconButton
         aria-label="delete"
-        onClick={() => handleDeleteTodoList(id)}
+        onClick={() => removeTodolist(id)}
         disabled={entityStatus == 'loading'}
       >
         <DeleteOutline />

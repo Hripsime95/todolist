@@ -2,27 +2,31 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import { getTheme } from '../common/theme/theme';
 import { useAppSelector } from '../common/hooks/useAppSelector';
-import { selectThemeMode } from './app-slice';
+import { selectThemeMode, setIsLoggedInAC } from './app-slice';
 import { ErrorSnackbar, Header } from '@/common/components';
 import { Routing } from '@/common/routing';
-import { useEffect, useState } from 'react';
-import { initializeApp } from '@/features/auth/model/auth-slice';
+import { useEffect } from 'react';
 import { useAppDispatch } from '@/common/hooks';
 import CircularProgress from '@mui/material/CircularProgress';
 import s from './App.module.css';
+import { useMeQuery } from '@/features/auth/api/authApi';
+import { ResultCode } from '@/common/enums/enums';
 
 function App() {
   const dispatch = useAppDispatch();
-  const [isInitialized, setIsInitialized] = useState(false);
+  const { data, isLoading } = useMeQuery();
+  console.log('isLoading', isLoading);
 
   const themeMode = useAppSelector(selectThemeMode);
   const theme = getTheme(themeMode);
-
   useEffect(() => {
-    dispatch(initializeApp()).finally(() => setIsInitialized(true));
-  }, []);
+    if (isLoading) return;
+    if (data?.resultCode === ResultCode.Success) {
+      dispatch(setIsLoggedInAC({ isLoggedIn: true }));
+    }
+  }, [isLoading]);
 
-  if (!isInitialized) {
+  if (isLoading) {
     return (
       <div className={s.circularProgressContainer}>
         <CircularProgress size={150} thickness={3} />
