@@ -1,8 +1,6 @@
 import { instance } from '@/common/instance';
 import { Todolist } from './todolistsApi.types';
 import { BaseResponse } from '@/common/types/types';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { AUTH_TOKEN } from '@/common/constants';
 import { DomainTodolist } from '../model/todolists-slice';
 import { baseApi } from '@/app/baseApi';
 

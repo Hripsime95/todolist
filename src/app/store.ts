@@ -4,10 +4,10 @@ import {
   todolistsSlce,
 } from '@/features/todolists/model/todolists-slice';
 import { appReducer, appSlice } from './app-slice';
-import {
-  tasksReducer,
-  tasksSlice,
-} from '@/features/todolists/model/tasks-slice';
+// import {
+//   tasksReducer,
+//   tasksSlice,
+// } from '@/features/todolists/model/tasks-slice';
 // import { authReducer, authSlice } from '@/features/auth/model/auth-slice';
 import { baseApi } from './baseApi';
 
@@ -21,7 +21,6 @@ import { baseApi } from './baseApi';
 // создание store
 export const store = configureStore({
   reducer: {
-    [tasksSlice.name]: tasksReducer,
     [todolistsSlce.name]: todolistsReducer,
     [appSlice.name]: appReducer,
     [baseApi.reducerPath]: baseApi.reducer,

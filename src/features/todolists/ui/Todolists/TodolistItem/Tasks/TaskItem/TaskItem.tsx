@@ -1,46 +1,43 @@
-import { Checkbox, IconButton, ListItem } from '@mui/material';
 import { EditableSpan } from '@/common/components/EditableSpan/EditableSpan';
-import Clear from '@mui/icons-material/Clear';
-import { useAppDispatch } from '@/common/hooks/useAppDispatch';
-import { getListItemSx } from './TaskItem.styles';
-import { deleteTask, updateTask } from '@/features/todolists/model/tasks-slice';
-import { DomainTask } from '@/features/todolists/api/tasksApi.types';
 import { TaskStatus } from '@/common/enums';
+import {
+  useDeleteTaskMutation,
+  useUpdateTaskMutation,
+} from '@/features/todolists/api/tasksApi';
+import { DomainTask } from '@/features/todolists/api/tasksApi.types';
+import Clear from '@mui/icons-material/Clear';
+import { Checkbox, IconButton, ListItem } from '@mui/material';
+import { getListItemSx } from './TaskItem.styles';
 
 type TProps = {
-  todoListId: string;
+  todolistId: string;
   task: DomainTask;
 };
 
 export const TaskItem = (props: TProps) => {
-  const { todoListId, task } = props;
-
-  const dispatch = useAppDispatch();
+  const { todolistId, task } = props;
+  const [updateTask] = useUpdateTaskMutation();
+  const [deleteTask] = useDeleteTaskMutation();
 
   const isTaskCompleted = task.status === TaskStatus.Completed;
 
-  function renameTask(title: string, taskId: string, id: string) {
-    dispatch(updateTask({ todolistId: id, taskId, domainModel: { title } }));
+  function renameTaskHandler(title: string, taskId: string, id: string) {
+    updateTask({ todolistId: id, taskId, model: { title } });
   }
 
-  function changeTaskState(args: {
+  function changeTaskStateHandler(args: {
     taskId: string;
     id: string;
     isDone: boolean;
   }) {
-    dispatch(
-      updateTask({
-        todolistId: args.id,
-        taskId: args.taskId,
-        domainModel: {
-          status: args.isDone ? TaskStatus.Completed : TaskStatus.New,
-        },
-      }),
-    );
-  }
-
-  function handleDeleteTask(taskId: string, id: string) {
-    dispatch(deleteTask({ todolistId: id, taskId: taskId }));
+    updateTask({
+      todolistId: args.id,
+      taskId: args.taskId,
+      model: {
+        ...task,
+        status: args.isDone ? TaskStatus.Completed : TaskStatus.New,
+      },
+    });
   }
 
   return (
@@ -48,20 +45,20 @@ export const TaskItem = (props: TProps) => {
       <Checkbox
         checked={isTaskCompleted}
         onChange={() =>
-          changeTaskState({
+          changeTaskStateHandler({
             taskId: task.id,
-            id: todoListId,
+            id: todolistId,
             isDone: !isTaskCompleted,
           })
         }
       />
       <EditableSpan
         value={task.title}
-        onChange={(newName) => renameTask(newName, task.id, todoListId)}
+        onChange={(newName) => renameTaskHandler(newName, task.id, todolistId)}
       ></EditableSpan>
       <IconButton
         size="small"
-        onClick={() => handleDeleteTask(task.id, todoListId)}
+        onClick={() => deleteTask({ todolistId, taskId: task.id })}
       >
         {' '}
         <Clear />

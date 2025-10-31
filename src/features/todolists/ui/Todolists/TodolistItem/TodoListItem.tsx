@@ -1,6 +1,4 @@
-import { useAppDispatch } from '@/common/hooks/useAppDispatch';
 import { DomainTask } from '@/features/todolists/api/tasksApi.types';
-import { createTask } from '@/features/todolists/model/tasks-slice';
 import { DomainTodolist } from '@/features/todolists/model/todolists-slice';
 import { FilterButtons } from '@/features/todolists/ui/Todolists/TodolistItem/FilterButtons/FilterButtons';
 import { Tasks } from '@/features/todolists/ui/Todolists/TodolistItem/Tasks/Tasks';
@@ -8,6 +6,7 @@ import { TodolistTitle } from '@/features/todolists/ui/Todolists/TodolistItem/To
 import Box from '@mui/material/Box';
 import { CreateItemForm } from '../../../../../common/components/CreateItemForm/CreateItemForm';
 import { containerSx } from '../../../../../common/styles/container.styles';
+import { useCreateTaskMutation } from '@/features/todolists/api/tasksApi';
 
 export type TTask = {
   id: string;
@@ -20,20 +19,17 @@ export type TTasks = {
 };
 
 export const TodoListItem = (props: { todolist: DomainTodolist }) => {
-  const dispatch = useAppDispatch();
-
+  const [createTask] = useCreateTaskMutation();
   const { id, title, filter, entityStatus } = props.todolist;
-
-  function handleCreateTask(title: string, id: string) {
-    dispatch(createTask({ todolistId: id, title }));
-  }
 
   return (
     <div>
       <TodolistTitle title={title} id={id} entityStatus={entityStatus} />
       <CreateItemForm
         title="Add Task"
-        addItemHandler={(title: string) => handleCreateTask(title, id)}
+        addItemHandler={(title: string) =>
+          createTask({ todolistId: id, title })
+        }
         disabled={entityStatus === 'loading'}
       />
       <Tasks id={id} filter={filter} />
