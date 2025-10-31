@@ -114,14 +114,14 @@ export const todolistsSlce = createAppSlice({
     //     },
     //   },
     // ),
-    changeTodolistFilterAC: create.reducer<{ id: string; filter: TFilter }>(
-      (state, action) => {
-        const index = state.findIndex((t) => t.id == action.payload.id);
-        if (index != -1) {
-          state[index].filter = action.payload.filter;
-        }
-      },
-    ),
+    // changeTodolistFilterAC: create.reducer<{ id: string; filter: TFilter }>(
+    //   (state, action) => {
+    //     const index = state.findIndex((t) => t.id == action.payload.id);
+    //     if (index != -1) {
+    //       state[index].filter = action.payload.filter;
+    //     }
+    //   },
+    // ),
     changeTodolistStatusAC: create.reducer<{
       id: string;
       status: RequestStatus;
@@ -142,7 +142,7 @@ export const {
   // changeTodolistTitle,
   //   createTodolist,
 
-  changeTodolistFilterAC,
+  // changeTodolistFilterAC,
   changeTodolistStatusAC,
 } = todolistsSlce.actions;
 export const todolistsReducer = todolistsSlce.reducer;

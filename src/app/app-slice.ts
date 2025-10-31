@@ -1,5 +1,6 @@
 import { RequestStatus } from '@/common/types/types';
 import { createAppSlice } from '@/common/utils';
+import { isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
 
 export type ThemeMode = 'dark' | 'light';
 
@@ -10,6 +11,18 @@ export const appSlice = createAppSlice({
     status: 'idle' as RequestStatus,
     error: null as string | null,
     isLoggedIn: false,
+  },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(isPending, (state, _action) => {
+        state.status = 'loading';
+      })
+      .addMatcher(isFulfilled, (state, _action) => {
+        state.status = 'succeeded';
+      })
+      .addMatcher(isRejected, (state, _action) => {
+        state.status = 'failed';
+      });
   },
   reducers: (create) => ({
     changeThemeModeAC: create.reducer<{ themeMode: ThemeMode }>(

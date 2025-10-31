@@ -2,6 +2,7 @@ import { Button } from '@mui/material';
 import { TFilter } from '../../Todolists';
 import { changeTodolistFilterAC } from '@/features/todolists/model/todolists-slice';
 import { useAppDispatch } from '@/common/hooks/useAppDispatch';
+import { todolistsApi } from '@/features/todolists/api/todolistsApi';
 
 type TProps = {
   id: string;
@@ -14,7 +15,14 @@ export const FilterButtons = (props: TProps) => {
   const dispatch = useAppDispatch();
 
   function changeFilter(filter: TFilter, id: string) {
-    dispatch(changeTodolistFilterAC({ id, filter }));
+    dispatch(
+      todolistsApi.util.updateQueryData('getTodolists', undefined, (state) => {
+        const todolist = state.find((todolist) => todolist.id === id);
+        if (todolist) {
+          todolist.filter = filter;
+        }
+      }),
+    );
   }
 
   return (
